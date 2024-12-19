@@ -1,0 +1,16 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  {% include 'components/header/header.html' %}
+
+  <body>
+    <h1>Deletar Formato</h1>
+    <p>Tem certeza de que deseja deletar o formato "{{ object.formato }}"?</p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit">Sim, deletar</button>
+    </form>
+    <a href="{% url 'formato-list' %}">Cancelar</a>
+  </body>
+  {% include 'components/footer/footer.html' %}
+</html>

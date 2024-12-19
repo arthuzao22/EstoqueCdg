@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  {% include 'components/header/header.html' %}
+
+  <body>
+    <div>
+        <h1 class="d-none d-md-block text-center">Lista de Estoque</h1> <!-- Mostrado em telas médias ou maiores -->
+        <h4 class="d-block d-md-none text-center">Lista de Estoque</h4> <!-- Mostrado em telas menores -->
+      </div>
+      <div class="mb-3 text-center">
+        <form method="get" action="{% url 'estoque-list' %}">
+          <button class="btn btn-outline-primary mx-1">Todos</button>
+          {% for categoria in categorias %}
+            <a class="btn btn-outline-secondary mx-1" href="?categorias_filter={{ categoria.id }}">{{ categoria.categoria }}</a>
+          {% endfor %}
+        </form>
+      </div>
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Produto</th>
+            <th class="d-none d-md-block">Quantidade</th> <!-- Mostrado em telas médias ou maiores -->
+            <th class="d-block d-md-none">Qtde</th> <!-- Mostrado em telas menores -->            
+            <th scope="col">Uni.</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for estoque in estoques %}
+            <tr>
+              <td>{{ estoque.id_produto.nome }}</td>
+              <td>{{ estoque.qtde }} {{ estoque.id_produto.id_formato.formato }}</td>
+              <td>{{ estoque.calculo }}</td>
+
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5" class="text-center">Nenhum item no estoque.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+
+  {% include 'components/footer/footer.html' %}
+</html>

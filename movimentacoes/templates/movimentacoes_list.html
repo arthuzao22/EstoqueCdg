@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  {% include 'components/header/header.html' %}
+
+  <body>
+    <div>
+        <h1 class="d-none d-md-block text-center">Lista de Movimentações.</h1> <!-- Mostrado em telas médias ou maiores -->
+        <h4 class="d-block d-md-none text-center">Lista de Movimentações</h4> <!-- Mostrado em telas menores -->
+      </div>
+     <a href="{% url 'movimentacoes-create' %}" class="btn btn-primary mb-3">Nova Movimentação</a>
+
+    <div class="table-responsive">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">User</th>
+            <th scope="col">Tipo</th>
+            <th scope="col">Data</th>
+            <th scope="col">Produtos</th>
+            <th scope="col">Categoria</th>
+            <th scope="col">Quantidade</th>
+            <th scope="col">Ações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for movimentacao in movimentacoes %}
+            <tr>
+              <td>
+                <div class="user" style="
+                border-style: solid;
+                border-radius: 8px; 
+                text-align: center;
+                border-width: 0.5px;
+                color: white;
+                background-color: #26979E;
+            ">{{ movimentacao.id_usuario.username|slice:'3'|upper }}</div>
+              </td>
+              <td>{{ movimentacao.tipo_movimentacao }}</td>
+              <td>{{ movimentacao.data }}</td>
+              <td>{{ movimentacao.id_produto.nome }}</td>
+              <td>{{ movimentacao.id_produto.id_categoria }}</td>
+              <td> <strong>{{ movimentacao.qtde }} - {{ movimentacao.id_produto.id_formato }} </strong></td>
+              <td>
+                <a href="" class="btn btn-info btn-sm">Detalhes</a>
+                <a href="{% url 'movimentacoes-delete' movimentacao.pk %}" class="btn btn-danger btn-sm">Deletar</a>
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="3" class="text-center">Nenhuma movimentação registrada.</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </body>
+
+  {% include 'components/footer/footer.html' %}
+</html>

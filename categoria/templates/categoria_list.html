@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  {% include 'components/header/header.html' %}
+
+  <body>
+      <div class="row">
+       
+        <!-- Formulário de Nova Categoria -->
+        <div class="col-12 col-md-6">
+          <div class="card shadow-sm">
+            <div class="card-header text-center bg-secondary text-white">
+              <h4>Cadastro de Nova Categoria</h4>
+            </div>
+            <div class="card-body">
+              <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                  <h4 for="categoria" class="form-label">Nome da Categoria</h4>
+                  <input type="text" name="categoria" id="categoria" class="form-control" placeholder="Digite o nome da categoria" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="{% url 'categoria-list' %}" class="btn btn-secondary ms-2">Cancelar</a>
+              </form>
+            </div>
+          </div>
+        </div>
+         <!-- Lista de Categorias -->
+         <div class="col-12 col-md-6 mb-4">
+          <div class="card shadow-sm">
+            <div class="card-header text-center text-white" style="background-color: #24969d;">
+              <h4>Lista de Categorias</h4>
+            </div>
+            <div class="card-body">
+              <ul class="list-group">
+                {% for categoria in categorias %}
+                  <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <h6 href="#" class="text-decoration-none">{{ categoria.categoria }}</h6>
+                    <div>
+                      <a href="{% url 'categoria-delete' categoria.pk %}" class="btn btn-danger btn-sm">Deletar</a>
+                    </div>
+                  </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+    </div>
+  </body>
+
+  {% include 'components/footer/footer.html' %}
+</html>

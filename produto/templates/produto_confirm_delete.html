@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Deletar produto</title>
+  </head>
+  <body>
+    <h1>Deletar produto</h1>
+    <p>Tem certeza de que deseja deletar o produto "{{ object.produto }}"?</p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit">Sim, deletar</button>
+    </form>
+    <a href="{% url 'produto-list' %}">Cancelar</a>
+  </body>
+</html>

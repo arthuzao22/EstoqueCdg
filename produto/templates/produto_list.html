@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  {% include 'components/header/header.html' %}
+
+  <body>
+    <div class="px-3">
+      <div>
+        <h1 class="d-none d-md-block text-center">Lista de Produtos</h1>
+        <h4 class="d-block d-md-none text-center">Lista de Produtos</h4>
+      </div>
+
+      <!-- Botões de Filtro -->
+      <div class="mb-3 text-center">
+        <form method="get" action="{% url 'produto-list' %}">
+          <button class="btn btn-outline-primary mx-1">Todos</button>
+          {% for categoria in categorias %}
+            <a class="btn btn-outline-secondary mx-1" href="?categorias_filter={{ categoria.id }}">{{ categoria.categoria }}</a>
+          {% endfor %}
+        </form>
+      </div>
+
+      <div class="btns d-flex">
+        <div class="btnnew">
+          <a href="{% url 'produto-create' %}" class="btn btn-primary mb-3">Novo Produto</a>
+        </div>
+      </div>
+
+
+      <!-- Lista de Produtos -->
+      <div class="row">
+        {% for produto in produtos %}
+          <div class="col-12 col-md-6 col-lg-4 mb-4">
+            <div class="card h-100">
+              <div class="card-body">
+                <h5 class="card-title">{{ produto.nome }}</h5>
+                <p class="card-text">
+                  <strong>Categoria:</strong> {{ produto.id_categoria }}<br />
+                  <strong>Quantidade:</strong> {{ produto.unidades }} unidades em cada {{ produto.id_formato }}
+                </p>
+                <div class="d-flex justify-content-between">
+                  <a href="{% url 'produto-delete' produto.pk %}" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Deletar</a>
+                  <a href="{% url 'produto-update' produto.pk %}" class="btn btn-info btn-sm"><i class="bi bi-pencil-square"></i> Editar</a>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% empty %}
+          <div class="col-12 text-center">
+            <p>Nenhum produto registrado.</p>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    {% include 'components/footer/footer.html' %}
+  </body>
+</html>

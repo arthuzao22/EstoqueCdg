@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  {% include 'components/header/header.html' %}
+
+  <body>
+    <h1>Deletar Categoria</h1>
+    <p>Tem certeza de que deseja deletar a categoria "{{ object.categoria }}"?</p>
+    <form method="post">
+      {% csrf_token %}
+      <button type="submit">Sim, deletar</button>
+    </form>
+    <a href="{% url 'categoria-list' %}">Cancelar</a>
+  </body>
+  {% include 'components/footer/footer.html' %}
+</html>

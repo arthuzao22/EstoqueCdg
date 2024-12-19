@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Register</title>
+  </head>
+  <body>
+    <!-- register.html -->
+
+    {% block content %}
+      <h2>Registrar-se</h2>
+
+      <form method="POST">
+        {% csrf_token %}
+
+        <!-- Exibindo os erros, caso existam -->
+        {% if form.errors %}
+          <div class="error">
+            <p>Há erros no formulário. Verifique abaixo.</p>
+          </div>
+        {% endif %}
+
+        <!-- Formulário de registro -->
+        {{ form.as_p }}
+        <button type="submit">Criar Conta</button>
+      </form>
+
+      <p>
+      </p>
+    {% endblock %}
+  </body>
+</html>

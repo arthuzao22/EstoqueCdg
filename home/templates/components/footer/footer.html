@@ -1,0 +1,29 @@
+{% load static %}
+
+</div>
+<script>
+    // Seleciona o elemento do spinner
+    const spinner = document.getElementById('loading-spinner');
+  
+    // Mostra o spinner quando o formulário for submetido
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function () {
+      spinner.classList.remove('d-none'); // Mostra o spinner
+    });
+  
+    // Mostra o spinner ao clicar em links de deletar
+    const deleteLinks = document.querySelectorAll('.btn-danger');
+    deleteLinks.forEach(link => {
+      link.addEventListener('click', function () {
+        spinner.classList.remove('d-none'); // Mostra o spinner
+      });
+    });
+  </script>
+  
+<script src="{% static 'js/jquery.min.js' %}"></script>
+<script src="{% static 'js/popper.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+</body>
+
+</html>

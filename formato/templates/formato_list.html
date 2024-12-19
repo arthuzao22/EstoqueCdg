@@ -1,0 +1,69 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  {% include 'components/header/header.html' %}
+
+  <body>
+    <div class="row gy-4">
+      <!-- Formulário de Novo Formato -->
+      <div class="col-12 col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-header text-center bg-secondary text-white">
+            <h4>
+              {% if object %}
+                Editar Formato
+              {% else %}
+                Cadastro de Novo Formato
+              {% endif %}
+            </h4>
+          </div>
+          <div class="card-body">
+            <form method="post">
+              {% csrf_token %}
+              <div class="mb-3">
+                <label for="formato" class="form-label">Nome do Formato</label>
+                <input type="text" name="formato" id="formato" class="form-control" placeholder="Digite o nome do formato" value="{{ object.formato|default:'' }}" required />
+              </div>
+              <div class="d-flex justify-content-end">
+                <button type="submit" class="btn btn-primary">Salvar</button>
+                <a href="{% url 'formato-list' %}" class="btn btn-secondary ms-2">Cancelar</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de Formatos -->
+      <div class="col-12 col-md-6">
+        <div class="card shadow-sm">
+          <div class="card-header text-center text-white" style="background-color: #24969d;">
+            <h4>Lista de Formatos</h4>
+          </div>
+          <div class="card-body">
+            <ul class="list-group">
+              {% for formato in formatos %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                  <div>
+                    <span class="fw-bold">Formato:</span> {{ formato.formato }}<br />
+                    <span class="text-muted small">Cadastrado em: {{ formato.data_cadastro }}</span>
+                  </div>
+                  <a href="{% url 'formato-delete' formato.pk %}" class="btn btn-sm btn-danger">Deletar</a>
+                </li>
+              {% empty %}
+                <li class="list-group-item text-center">Nenhum formato cadastrado ainda.</li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Loading Spinner -->
+    <div id="loading-spinner" class="d-none justify-content-center align-items-center position-fixed top-0 start-0 w-100 h-100 bg-white bg-opacity-75" style="z-index: 1050;">
+      <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;">
+        <span class="visually-hidden">Loading...</span>
+      </div>
+    </div>
+  </body>
+
+  {% include 'components/footer/footer.html' %}
+</html>
