@@ -1,33 +1,61 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Register</title>
+    <title>Registrar-se</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
   </head>
   <body>
-    <!-- register.html -->
-
-    {% block content %}
-      <h2>Registrar-se</h2>
-
-      <form method="POST">
-        {% csrf_token %}
-
-        <!-- Exibindo os erros, caso existam -->
-        {% if form.errors %}
-          <div class="error">
-            <p>Há erros no formulário. Verifique abaixo.</p>
+    <div class="container-fluid vh-100">
+      <div class="row h-100">
+        <!-- Coluna da imagem -->
+        <div
+          class="col-md-6 d-none d-md-flex align-items-center justify-content-center text-white"
+          style="background-color: #24969d;"
+        >
+          <div class="text-center">
+            <img
+              src="{% static 'images/logo_png_site.png' %}"
+              alt="Casa da Gráfica"
+              class="img-fluid"
+              style="height: 20%; width: 60%;"
+            />
           </div>
-        {% endif %}
+        </div>
+        <!-- Coluna do formulário -->
+        <div class="col-md-6 d-flex align-items-center justify-content-center">
+          <form method="post" class="w-75">
+            {% csrf_token %}
+            <h2 class="mb-4 text-center">Registrar-se</h2>
 
-        <!-- Formulário de registro -->
-        {{ form.as_p }}
-        <button type="submit">Criar Conta</button>
-      </form>
+            <!-- Exibindo erros, caso existam -->
+            {% if form.errors %}
+            <div class="alert alert-danger" role="alert">
+              Há erros no formulário. Verifique abaixo.
+            </div>
+            {% endif %}
 
-      <p>
-      </p>
-    {% endblock %}
+            <!-- Renderizando campos do formulário -->
+            {{ form.as_p }}
+
+            <button
+              type="submit"
+              class="btn w-100"
+              style="background-color: #24969d;"
+            >
+              Criar Conta
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
   </body>
 </html>

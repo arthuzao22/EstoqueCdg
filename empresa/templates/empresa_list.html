@@ -32,7 +32,7 @@
         <div class="col-12 col-md-6 mb-3">
           <div class="card shadow-sm">
             <div class="card-header text-center text-white" style="background-color: #24969d;">
-              <h4>Lista de Empresas</h4>
+              <h4>Empresas Cadastradas</h4>
             </div>
             <div class="card-body">
               <ul class="list-group">
@@ -42,7 +42,7 @@
                     <div class="flex-grow-1">
                       <p class="mb-1"><strong>Nome:</strong> {{ empresa.nome }}</p>
                       <p class="mb-1"><strong>Endereço:</strong> {{ empresa.endereco }}</p>
-                      <p class="mb-0 text-muted"><strong>Data:</strong> {{ empresa.data }}</p>
+                      <p class="mb-0 text-muted"><strong>Data de cadastro da {{ empresa.nome }}:</strong> {{ empresa.data }}</p>
                     </div>
                     <!-- Botão deletar -->
                     <div class="text-nowrap">

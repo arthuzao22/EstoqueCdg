@@ -34,7 +34,10 @@
               <ul class="list-group">
                 {% for categoria in categorias %}
                   <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <h6 href="#" class="text-decoration-none">{{ categoria.categoria }}</h6>
+                    <div class="flex-grow-1">
+                      <p class="mb-1"><strong>Nome da categoria:</strong> {{ categoria.categoria }}</p>
+                      <p class="mb-1"><strong>Data de cadastro da categoria:</strong> {{ categoria.data_cadastro }}</p>
+                    </div>
                     <div>
                       <a href="{% url 'categoria-delete' categoria.pk %}" class="btn btn-danger btn-sm">Deletar</a>
                     </div>

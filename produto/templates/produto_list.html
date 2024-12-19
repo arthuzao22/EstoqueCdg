@@ -12,9 +12,9 @@
       <!-- Botões de Filtro -->
       <div class="mb-3 text-center">
         <form method="get" action="{% url 'produto-list' %}">
-          <button class="btn btn-outline-primary mx-1">Todos</button>
+          <button id="printButton" class="btn btn-outline-primary mx-1">Todos</button>
           {% for categoria in categorias %}
-            <a class="btn btn-outline-secondary mx-1" href="?categorias_filter={{ categoria.id }}">{{ categoria.categoria }}</a>
+            <a class="btn btn-outline-secondary mx-1" id="printButton" href="?categorias_filter={{ categoria.id }}">{{ categoria.categoria }}</a>
           {% endfor %}
         </form>
       </div>
@@ -30,7 +30,7 @@
       <div class="row">
         {% for produto in produtos %}
           <div class="col-12 col-md-6 col-lg-4 mb-4">
-            <div class="card h-100">
+            <div class="card h-100 shadow">
               <div class="card-body">
                 <h5 class="card-title">{{ produto.nome }}</h5>
                 <p class="card-text">
@@ -54,4 +54,6 @@
 
     {% include 'components/footer/footer.html' %}
   </body>
+
 </html>
+

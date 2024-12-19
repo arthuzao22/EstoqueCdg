@@ -43,9 +43,9 @@
             <ul class="list-group">
               {% for formato in formatos %}
                 <li class="list-group-item d-flex justify-content-between align-items-center">
-                  <div>
-                    <span class="fw-bold">Formato:</span> {{ formato.formato }}<br />
-                    <span class="text-muted small">Cadastrado em: {{ formato.data_cadastro }}</span>
+                  <div class="flex-grow-1">
+                    <p class="mb-1"><strong>Formato:</strong> {{ formato.formato }}</p>
+                    <p class="mb-1"><strong>Data de cadastro do formato:</strong> {{ formato.data_cadastro }}</p>
                   </div>
                   <a href="{% url 'formato-delete' formato.pk %}" class="btn btn-sm btn-danger">Deletar</a>
                 </li>
