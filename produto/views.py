@@ -30,7 +30,7 @@ class ProdutoListView(LoginRequiredMixin, ListView):
 class ProdutoCreateView(LoginRequiredMixin, CreateView):
     model = Produto
     template_name = 'produto_form.html'
-    fields = ['nome', 'id_categoria', 'formato', 'id_formato', 'estoqueMin','unidades']
+    fields = ['nome', 'id_categoria', 'formato', 'id_formato', 'estoquemin','unidades']
     success_url = reverse_lazy('produto-list')
 
     def form_valid(self, form):
@@ -46,7 +46,7 @@ class ProdutoCreateView(LoginRequiredMixin, CreateView):
 class ProdutoUpdateView(LoginRequiredMixin, UpdateView):
     model = Produto
     template_name = 'produto_form.html'
-    fields = ['nome', 'id_categoria', 'formato', 'id_formato', 'estoqueMin','unidades']
+    fields = ['nome', 'id_categoria', 'formato', 'id_formato', 'estoquemin','unidades']
     success_url = reverse_lazy('produto-list')
 
 # Deletar produto

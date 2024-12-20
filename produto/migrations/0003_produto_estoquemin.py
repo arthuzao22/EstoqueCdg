@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name='produto',
-            name='estoqueMin',
+            name='estoquemin',
             field=models.IntegerField(default=1),
             preserve_default=False,
         ),
