@@ -58,9 +58,22 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="id_id_produto">Produto</label>
-                    {{ form.id_produto }}
+                    <label for="id_categoria">Categoria</label>
+                    <select id="id_categoria" name="categoria" class="form-control">
+                        <option value="">--- Selecione uma categoria ---</option>
+                        {% for categoria in categorias %}
+                        <option value="{{ categoria.id }}">{{ categoria.categoria }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
+                
+                <div class="form-group mb-3">
+                    <label for="id_id_categoria">Produto</label>
+                    <select id="id_id_categoria" name="id_produto" class="form-control">
+                        <option value="">--- Selecione um produto ---</option>
+                    </select>
+                </div>
+                
 
                 <div class="form-group mb-3">
                     <label for="id_qtde">Quantidade</label>
@@ -89,6 +102,30 @@
     <!-- Incluindo o JS do Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
-
+<script>
+    document.getElementById('id_categoria').addEventListener('change', function () {
+        const id_categoria = this.value;
+        const produtoSelect = document.getElementById('id_id_categoria');
+        
+        if (id_categoria) {
+            fetch(`/filtrar-produtos/?id_categoria=${id_categoria}`)  // Corrigido para 'id_categoria'
+                .then(response => response.json())
+                .then(data => {
+                    produtoSelect.innerHTML = '<option value="">--- Selecione um produto ---</option>';
+                    data.forEach(produto => {
+                        const option = document.createElement('option');
+                        option.value = produto.id;
+                        option.textContent = produto.nome;
+                        produtoSelect.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Erro ao carregar produtos:', error));
+        } else {
+            produtoSelect.innerHTML = '<option value="">--- Selecione um produto ---</option>';
+        }
+    });
+    
+</script>
+    
 {% include 'components/footer/footer.html' %}
 </html>

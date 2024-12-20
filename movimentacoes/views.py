@@ -8,7 +8,22 @@ from django.shortcuts import get_object_or_404
 from produto.models import Estoque
 from django.http import HttpResponse
 from .forms import MovimentacoesForm
+from formato.models import Formato  # Importação do modelo Categoria
+from categoria.models import Categoria  # Importação do modelo Categoria
+from django.http import HttpResponse
+from django.http import JsonResponse
+from produto.models import Produto  # Certifique-se de que está importando o modelo Produto corretamente
 
+def filtrar_produtos_por_formato(request):
+    id_categoria = request.GET.get('id_categoria')  # Corrigido para 'id_categoria'
+    print(id_categoria)
+    if id_categoria:
+        produtos = Produto.objects.filter(id_categoria=id_categoria)
+        produtos_data = [{'id': produto.id, 'nome': produto.nome} for produto in produtos]
+        # for produtos_data in produtos_data:
+        #     print(produtos_data)
+        return JsonResponse(produtos_data, safe=False)
+    return JsonResponse([], safe=False)
 
 # Listar movimentações
 class MovimentacoesListView(LoginRequiredMixin, ListView):
@@ -42,6 +57,10 @@ class MovimentacoesCreateView(LoginRequiredMixin, CreateView):
 
         estoque.save()
         return super().form_valid(form)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categorias'] = Categoria.objects.all()  # Envia as categorias para o template
+        return context
 
 class MovimentacoesDeleteView(LoginRequiredMixin, DeleteView):
     model = Movimentacoes

@@ -4,7 +4,7 @@ from empresa.views import EmpresaListView, EmpresaCreateView, EmpresaDeleteView
 from categoria.views import CategoriaListView, CategoriaCreateView, CategoriaDeleteView
 from formato.views import FormatoListView, FormatoCreateView, FormatoDeleteView
 from produto.views import ProdutoListView, ProdutoCreateView, ProdutoUpdateView, ProdutoDeleteView, EstoqueListView
-from movimentacoes.views import  MovimentacoesListView, MovimentacoesCreateView, MovimentacoesDeleteView
+from movimentacoes.views import  MovimentacoesListView, MovimentacoesCreateView, MovimentacoesDeleteView, filtrar_produtos_por_formato
 from usuarios.views import register_view, login_view
 from home.views import home_view
 from django.http import HttpResponse
@@ -39,6 +39,8 @@ urlpatterns = [
     path('movimentacoes/', MovimentacoesListView.as_view(), name='movimentacoes-list'),
     path('movimentacoes/novo/', MovimentacoesCreateView.as_view(), name='movimentacoes-create'),
     path('movimentacoes/<int:pk>/deletar/', MovimentacoesDeleteView.as_view(), name='movimentacoes-delete'),
+    path('filtrar-produtos/', filtrar_produtos_por_formato, name='filtrar_produtos'),
+
     
     # Rotas para Estoque
     path('estoque/', EstoqueListView.as_view(), name='estoque-list'),
