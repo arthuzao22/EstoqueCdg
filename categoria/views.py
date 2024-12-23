@@ -1,33 +1,32 @@
 from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, DeleteView
+from django.views.generic import CreateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Categoria
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy, reverse
 from django.views import View
+from .models import Categoria
 
 class CategoriaListView(LoginRequiredMixin, View):
     def get(self, request):
-        categorias = Categoria.objects.all()  # Obtenha a lista de categorias
+        categorias = Categoria.objects.all()  # Obtenha todas as categorias
         return render(request, 'categoria_list.html', {'categorias': categorias})
 
     def post(self, request):
-        # Receba os dados enviados via POST
+        # Processar o formulário manualmente
         nova_categoria = request.POST.get('categoria')
+        imagem = request.FILES.get('img')  # Obter o arquivo de imagem enviado
         if nova_categoria:
-            Categoria.objects.create(categoria=nova_categoria)  # Cria uma nova categoria
-        return HttpResponseRedirect(reverse('categoria-list'))
+            Categoria.objects.create(categoria=nova_categoria, img=imagem)  # Criar nova categoria com imagem
+        return HttpResponseRedirect(reverse_lazy('categoria-list'))
 
 
-# Criar categoria
 class CategoriaCreateView(LoginRequiredMixin, CreateView):
     model = Categoria
-    template_name = 'categoria_list.html'  # O template agora é o mesmo para criação e listagem
-    fields = ['categoria']
-    success_url = reverse_lazy('categoria-list')  # Redireciona após criação para a lista
+    template_name = 'categoria_list.html'  # Usando o mesmo template
+    fields = ['categoria', 'img']
+    success_url = reverse_lazy('categoria-list')
 
-# Deletar categoria
+
 class CategoriaDeleteView(LoginRequiredMixin, DeleteView):
     model = Categoria
     template_name = 'categoria_confirm_delete.html'

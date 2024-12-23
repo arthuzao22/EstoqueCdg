@@ -1,54 +1,61 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-  {% include 'components/header/header.html' %}
+{% include 'components/header/header.html' %}
 
-  <body>
-      <div class="row">
-       
+<body>
+    <div class="row">
         <!-- Formulário de Nova Categoria -->
         <div class="col-12 col-md-6">
-          <div class="card shadow-sm">
-            <div class="card-header text-center bg-secondary text-white">
-              <h4>Cadastro de Nova Categoria</h4>
-            </div>
-            <div class="card-body">
-              <form method="post">
-                {% csrf_token %}
-                <div class="mb-3">
-                  <h4 for="categoria" class="form-label">Nome da Categoria</h4>
-                  <input type="text" name="categoria" id="categoria" class="form-control" placeholder="Digite o nome da categoria" required>
+            <div class="card shadow-sm">
+                <div class="card-header text-center bg-secondary text-white">
+                    <h4>Cadastro de Nova Categoria</h4>
                 </div>
-                <button type="submit" class="btn btn-primary">Salvar</button>
-                <a href="{% url 'categoria-list' %}" class="btn btn-secondary ms-2">Cancelar</a>
-              </form>
+                <div class="card-body">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="categoria" class="form-label">Nome da Categoria</label>
+                            <input type="text" name="categoria" id="categoria" class="form-control"
+                                placeholder="Digite o nome da categoria" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="img" class="form-label">Selecione a Imagem para a Categoria</label>
+                            <input type="file" name="img" id="img" accept="image/*" class="form-control" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Salvar</button>
+                    </form>
+                </div>
             </div>
-          </div>
         </div>
-         <!-- Lista de Categorias -->
-         <div class="col-12 col-md-6 mb-4">
-          <div class="card shadow-sm">
-            <div class="card-header text-center text-white" style="background-color: #24969d;">
-              <h4>Lista de Categorias</h4>
+
+        <!-- Lista de Categorias -->
+        <div class="col-12 col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header text-center text-white" style="background-color: #24969d;">
+                    <h4>Lista de Categorias</h4>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for categoria in categorias %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            <div class="flex-grow-1">
+                                <p class="mb-1"><strong>Nome da categoria:</strong> {{ categoria.categoria }}</p>
+                                <p class="mb-1"><strong>Data de cadastro:</strong> {{ categoria.data_cadastro }}</p>
+                                {% if categoria.img %}
+                                <img src="{{ categoria.img.url }}" alt="{{ categoria.categoria }}" style="max-width: 100px;">
+                                {% endif %}
+                            </div>
+                            <div>
+                                <a href="{% url 'categoria-delete' categoria.pk %}" class="btn btn-danger btn-sm">Deletar</a>
+                            </div>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
             </div>
-            <div class="card-body">
-              <ul class="list-group">
-                {% for categoria in categorias %}
-                  <li class="list-group-item d-flex justify-content-between align-items-center">
-                    <div class="flex-grow-1">
-                      <p class="mb-1"><strong>Nome da categoria:</strong> {{ categoria.categoria }}</p>
-                      <p class="mb-1"><strong>Data de cadastro da categoria:</strong> {{ categoria.data_cadastro }}</p>
-                    </div>
-                    <div>
-                      <a href="{% url 'categoria-delete' categoria.pk %}" class="btn btn-danger btn-sm">Deletar</a>
-                    </div>
-                  </li>
-                {% endfor %}
-              </ul>
-            </div>
-          </div>
         </div>
     </div>
-  </body>
+</body>
 
-  {% include 'components/footer/footer.html' %}
+{% include 'components/footer/footer.html' %}
 </html>

@@ -9,7 +9,9 @@ from usuarios.views import register_view, login_view
 from home.views import home_view
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
-    
+from django.conf import settings
+from django.conf.urls.static import static
+
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', home_view, name='home'),
@@ -50,3 +52,5 @@ urlpatterns = [
     path('usuarios/register/', register_view, name='usuarios-register'),
 
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

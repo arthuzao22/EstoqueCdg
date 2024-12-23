@@ -25,14 +25,19 @@
         </div>
       </div>
 
-
       <!-- Lista de Produtos -->
       <div class="row">
         {% for produto in produtos %}
           <div class="col-12 col-md-6 col-lg-4 mb-4">
             <div class="card h-100 shadow">
               <div class="card-body">
-                <h5 class="card-title">{{ produto.nome }}</h5>
+                <h5 class="card-title d-flex justify-content-between">
+                  {{ produto.nome }}
+                  {{ produto.formato|default:'' }}
+                  {% if produto.id_categoria.img %}
+                    <img src="{{ produto.id_categoria.img.url }}" alt="{{ categoria.categoria }}" class="bi bi-pencil-square float-end" style="max-width: 30%;">
+                  {% endif %}
+                </h5>
                 <p class="card-text">
                   <strong>Categoria:</strong> {{ produto.id_categoria }}<br />
                   <strong>Quantidade:</strong> {{ produto.unidades }} unidades em cada {{ produto.id_formato }}
@@ -54,6 +59,4 @@
 
     {% include 'components/footer/footer.html' %}
   </body>
-
 </html>
-
