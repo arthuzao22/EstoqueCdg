@@ -58,9 +58,9 @@
                 </div>
 
                 <div class="form-group mb-3">
-                    <label for="id_categoria">Categoria</label>
-                    <select id="id_categoria" name="categoria" class="form-control">
-                        <option value="">--- Selecione uma categoria ---</option>
+                    <label for="id_categoria">Selecione a Categoria</label>
+                    <select id="id_categoria" name="categoria">
+                        <option value="">------</option>
                         {% for categoria in categorias %}
                         <option value="{{ categoria.id }}">{{ categoria.categoria }}</option>
                         {% endfor %}
@@ -68,15 +68,14 @@
                 </div>
                 
                 <div class="form-group mb-3">
-                    <label for="id_id_categoria">Produto</label>
-                    <select id="id_id_categoria" name="id_produto" class="form-control">
+                    <label for="id_id_categoria">Selecione o Produto</label>
+                    <select id="id_id_categoria" name="id_produto">
                         <option value="">--- Selecione um produto ---</option>
                     </select>
                 </div>
-                
 
                 <div class="form-group mb-3">
-                    <label for="id_qtde">Quantidade</label>
+                    <label for="id_qtde">Informe a Quantidade</label>
                     {{ form.qtde }}
                 </div>
 
@@ -111,19 +110,29 @@
             fetch(`/filtrar-produtos/?id_categoria=${id_categoria}`)  // Corrigido para 'id_categoria'
                 .then(response => response.json())
                 .then(data => {
-                    produtoSelect.innerHTML = '<option value="">--- Selecione um produto ---</option>';
+                    produtoSelect.innerHTML = '<option value="">------</option>';
                     data.forEach(produto => {
                         const option = document.createElement('option');
                         option.value = produto.id;
-                        option.textContent = produto.nome;
+                        option.textContent = produto.nome + ' ' + (produto.formato ?? '');
+                        option.setAttribute('data-formato', produto.id_formato_id); 
                         produtoSelect.appendChild(option);
                     });
                 })
                 .catch(error => console.error('Erro ao carregar produtos:', error));
         } else {
-            produtoSelect.innerHTML = '<option value="">--- Selecione um produto ---</option>';
+            produtoSelect.innerHTML = '<option value="">------</option>';
         }
     });
+    document.getElementById('id_id_categoria').addEventListener('change', function () {
+        const selectedOption = this.options[this.selectedIndex];
+        const formato = selectedOption.getAttribute('data-formato') || 'unidade(s)'; // Valor padrão
+        const qtdeLabel = document.querySelector('label[for="id_qtde"]');
+        
+        // Atualiza o texto do rótulo
+        qtdeLabel.textContent = `Informe a Quantidade de ${formato}`;
+    });
+    
     
 </script>
     

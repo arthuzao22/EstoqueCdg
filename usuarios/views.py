@@ -20,18 +20,3 @@ def login_view(request):
 
     return render(request, 'usuarios_login.html', {'form': form})
 
-
-def register_view(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.success(request, "Conta criada com sucesso! Agora, você pode fazer o login.")
-            return redirect('login')  # Redireciona para a página de login
-        else:
-            messages.error(request, "Erro ao criar conta. Tente novamente.")
-    else:
-        form = UserCreationForm()
-
-    return render(request, 'usuarios_register.html', {'form': form})
-

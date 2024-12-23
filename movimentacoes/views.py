@@ -19,11 +19,18 @@ def filtrar_produtos_por_formato(request):
     print(id_categoria)
     if id_categoria:
         produtos = Produto.objects.filter(id_categoria=id_categoria)
-        produtos_data = [{'id': produto.id, 'nome': produto.nome} for produto in produtos]
-        # for produtos_data in produtos_data:
-        #     print(produtos_data)
+        produtos_data = [
+            {
+                'id': produto.id,
+                'nome': produto.nome,
+                'formato': produto.formato,
+                'id_formato_id': produto.id_formato.formato  # Corrigido para acessar o objeto relacionado
+            }
+            for produto in produtos
+        ]
         return JsonResponse(produtos_data, safe=False)
     return JsonResponse([], safe=False)
+
 
 # Listar movimentações
 class MovimentacoesListView(LoginRequiredMixin, ListView):
@@ -67,14 +74,22 @@ class MovimentacoesDeleteView(LoginRequiredMixin, DeleteView):
     template_name = 'movimentacoes_confirm_delete.html'
     success_url = reverse_lazy('movimentacoes-list')
 
-    def form_valid(self, request, *args, **kwargs):
-        print('entrouy aqui')
-        obj = self.get_object()
-        estoque = Estoque.objects.get(id_produto=obj.id_produto)
+    def delete(self, request, *args, **kwargs):
+        obj = self.get_object()  # Obter a movimentação que será deletada
+        try:
+            estoque = Estoque.objects.get(id_produto=obj.id_produto)  # Obter o estoque do produto relacionado
+        except Estoque.DoesNotExist:
+            return HttpResponse("Estoque não encontrado para o produto", status=400)
+
+        # Atualizar o estoque de acordo com o tipo de movimentação
         if obj.tipo_movimentacao == 'Entrada':
-            estoque.qtde -= obj.qtde
+            estoque.qtde -= obj.qtde  # Reduzir a quantidade no estoque
         elif obj.tipo_movimentacao == 'Saída':
-            estoque.qtde += obj.qtde
-        estoque.save()
+            estoque.qtde += obj.qtde  # Adicionar a quantidade de volta ao estoque
+
+        estoque.save()  # Salvar as mudanças no estoque
+
+        # Agora, realiza a exclusão da movimentação
         return super().delete(request, *args, **kwargs)
+
 

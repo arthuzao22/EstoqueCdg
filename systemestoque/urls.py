@@ -5,7 +5,7 @@ from categoria.views import CategoriaListView, CategoriaCreateView, CategoriaDel
 from formato.views import FormatoListView, FormatoCreateView, FormatoDeleteView
 from produto.views import ProdutoListView, ProdutoCreateView, ProdutoUpdateView, ProdutoDeleteView, EstoqueListView
 from movimentacoes.views import  MovimentacoesListView, MovimentacoesCreateView, MovimentacoesDeleteView, filtrar_produtos_por_formato
-from usuarios.views import register_view, login_view
+from usuarios.views import login_view
 from home.views import home_view
 from django.http import HttpResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -49,8 +49,6 @@ urlpatterns = [
     
     #Rotas para Usuarios
     path('usuarios/login/', login_view, name='usuarios-login'),
-    path('usuarios/register/', register_view, name='usuarios-register'),
-
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
