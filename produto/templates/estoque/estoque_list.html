@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="pt-br">
   {% include 'components/header/header.html' %}
@@ -11,7 +12,6 @@
     <div class="mb-3 d-flex justify-content-center">
       <div class="overflow-auto d-flex justify-content-center flex-nowrap">
         <form method="get" action="{% url 'estoque-list' %}" class="d-flex">
-          <button class="btn btn-outline-primary mx-1 flex-shrink-0">Todos</button>
           {% for categoria in categorias %}
             <a class="btn btn-outline-secondary mx-1 flex-shrink-0" href="?categorias_filter={{ categoria.id }}">{{ categoria.categoria }}</a>
           {% endfor %}
@@ -32,8 +32,8 @@
           {% for estoque in estoques %}
             <tr>
               <td>{{ estoque.id_produto.nome }} {{ estoque.id_produto.formato|default:'' }}</td>
-              <td>{{ estoque.qtde }} {{ estoque.id_produto.id_formato.formato }}</td>
-              <td>{{ estoque.calculo }}</td>
+              <td class="numero">{{ estoque.qtde }} {{ estoque.id_produto.id_formato.formato }}</td>
+              <td class="numero">{{ estoque.calculo }}</td>
             </tr>
           {% empty %}
             <tr>
@@ -43,7 +43,18 @@
         </tbody>
       </table>
     </div>
+    
   </body>
 
+  <script>
+    function formatarNumero(numero) {
+      return numero.toLocaleString('pt-BR')
+    }
+    
+    // Seleciona todos os elementos com a classe 'numero' e formata o texto
+    document.querySelectorAll('.numero').forEach(function (elemento) {
+      elemento.innerText = formatarNumero(parseInt(elemento.innerText) || 0)
+    })
+  </script>
   {% include 'components/footer/footer.html' %}
 </html>

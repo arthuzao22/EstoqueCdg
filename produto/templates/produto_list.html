@@ -13,7 +13,6 @@
       <div class="mb-3 text-center d-flex justify-content-center">
         <div class="overflow-auto d-flex justify-content-center flex-nowrap">
           <form method="get" action="{% url 'produto-list' %}" class="d-flex">
-            <button id="printButton" class="btn btn-outline-primary mx-1 flex-shrink-0">Todos</button>
             {% for categoria in categorias %}
               <a class="btn btn-outline-secondary mx-1 flex-shrink-0" id="printButton" href="?categorias_filter={{ categoria.id }}">{{ categoria.categoria }}</a>
             {% endfor %}
@@ -28,36 +27,36 @@
       </div>
 
       <!-- Lista de Produtos -->
-      <div class="row">
-        {% for produto in produtos %}
-          <div class="col-12 col-md-6 col-lg-4 mb-4">
-            <div class="card h-100 shadow">
-              <div class="card-body">
-                <h5 class="card-title d-flex justify-content-between">
-                  {{ produto.nome }}
-                  {{ produto.formato|default:'' }}
-                  {% if produto.id_categoria.img %}
-                    <img src="{{ produto.id_categoria.img.url }}" alt="{{ categoria.categoria }}" class="bi bi-pencil-square float-end" style="max-width: 30%;" />
-                  {% endif %}
-                </h5>
-                <p class="card-text">
-                  <strong>Data:</strong> {{ produto.data_cadastro }}<br />
-                  <strong>Categoria:</strong> {{ produto.id_categoria }}<br />
-                  <strong>Quantidade:</strong> {{ produto.unidades }} unidades em cada {{ produto.id_formato }}
-                </p>
-                <div class="d-flex justify-content-between">
-                  <a href="{% url 'produto-delete' produto.pk %}" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Deletar</a>
-                  <a href="{% url 'produto-update' produto.pk %}" class="btn btn-info btn-sm"><i class="bi bi-pencil-square"></i> Editar</a>
-                </div>
+    <div class="row">
+      {% for produto in produtos %}
+        <div class="col-12 col-md-6 col-lg-4 mb-4">
+          <div class="card h-100 shadow position-relative">
+            <div class="card-body">
+              <h5 class="card-title d-flex justify-content-between">
+                {{ produto.nome }}
+                {{ produto.formato|default:'' }}
+                {% if produto.id_categoria.img %}
+                  <img src="{{ produto.id_categoria.img.url }}" alt="{{ categoria.categoria }}" class="img-fluid" style="width: 50px; height: 50px;" />
+                {% endif %}
+              </h5>
+
+              <p class="card-text">
+                <strong>Data:</strong> {{ produto.data_cadastro }}<br />
+                <strong>Categoria:</strong> {{ produto.id_categoria }}<br />
+                <strong>Quantidade:</strong> {{ produto.unidades }} unidades em cada {{ produto.id_formato }}
+              </p>
+              <div class="d-flex justify-content-between">
+                <a href="{% url 'produto-delete' produto.pk %}" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Deletar</a>
+                <a href="{% url 'produto-update' produto.pk %}" class="btn btn-info btn-sm"><i class="bi bi-pencil-square"></i> Editar</a>
               </div>
             </div>
           </div>
-        {% empty %}
-          <div class="col-12 text-center">
-            <p>Nenhum produto registrado.</p>
-          </div>
-        {% endfor %}
-      </div>
+        </div>
+      {% empty %}
+        <div class="col-12 text-center">
+          <p>Nenhum produto registrado.</p>
+        </div>
+      {% endfor %}
     </div>
 
     {% include 'components/footer/footer.html' %}

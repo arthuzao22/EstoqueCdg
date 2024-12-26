@@ -41,7 +41,7 @@
               <td>{{ movimentacao.id_produto.id_categoria }}</td>
               <td> <strong>{{ movimentacao.qtde }} - {{ movimentacao.id_produto.id_formato }} </strong></td>
               <td>
-                <a href="" class="btn btn-info btn-sm">Detalhes</a>
+                
                 <a href="{% url 'movimentacoes-delete' movimentacao.pk %}" class="btn btn-danger btn-sm">Deletar</a>
               </td>
             </tr>

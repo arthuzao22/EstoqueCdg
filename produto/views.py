@@ -20,10 +20,10 @@ class ProdutoListView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         try:
             context = super().get_context_data(**kwargs)
-            context['categorias'] = Categoria.objects.all()  # Obtém todas as categorias
+            context['categorias'] = Categoria.objects.all()  # Obtém todas as categorias para exibição no template
             return context
         except Exception as e:
-            messages.error(self.request, f"Ocorreu um erro ao carregar os dados: {str(e)}")
+            messages.error(self.request, f"Ocorreu um erro ao carregar as categorias: {str(e)}")
             return {}
 
     def get_queryset(self):
@@ -31,11 +31,14 @@ class ProdutoListView(LoginRequiredMixin, ListView):
             queryset = super().get_queryset()
             categorias_filter = self.request.GET.get('categorias_filter')  # Obtém o parâmetro da URL
             if categorias_filter:
-                queryset = queryset.filter(id_categoria=categorias_filter)  # Filtra produtos da categoria
+                queryset = queryset.filter(id_categoria=categorias_filter)  # Filtra produtos por categoria
+            else:
+                queryset = queryset.filter(id_categoria=2)  # Filtro padrão (id_categoria=1)
             return queryset
         except Exception as e:
             messages.error(self.request, f"Ocorreu um erro ao filtrar os produtos: {str(e)}")
             return Produto.objects.none()
+
 
 
 # Criar produto
@@ -118,6 +121,9 @@ class EstoqueListView(LoginRequiredMixin, ListView):
             categorias_filter = self.request.GET.get('categorias_filter')  # Parâmetro da URL
             if categorias_filter:
                 queryset = queryset.filter(id_produto__id_categoria=categorias_filter)
+            else:
+                queryset = queryset.filter(id_produto__id_categoria=2)  # Filtro padrão (id_categoria=1)
+
             return queryset
         except Exception as e:
             messages.error(self.request, f"Ocorreu um erro ao filtrar os estoques: {str(e)}")
