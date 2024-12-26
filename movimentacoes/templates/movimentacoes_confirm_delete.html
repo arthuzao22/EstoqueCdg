@@ -1,10 +1,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Deletar Movimentação</title>
-</head>
+  {% include 'components/header/header.html' %}
+
 <body>
     <h1>Deletar Movimentação</h1>
     <p>Tem certeza de que deseja excluir esta movimentação?</p>
@@ -14,4 +11,5 @@
     </form>
     <a href="{% url 'movimentacoes-list' %}">Cancelar</a>
 </body>
+{% include 'components/footer/footer.html' %}
 </html>

@@ -86,9 +86,14 @@ class ProdutoDeleteView(LoginRequiredMixin, DeleteView):
 
     def delete(self, request, *args, **kwargs):
         try:
-            response = super().delete(request, *args, **kwargs)
-            messages.success(request, "Produto deletado com sucesso!")
-            return response
+            if request.user.is_authenticated and request.user.is_superuser:
+                response = super().delete(request, *args, **kwargs)
+                messages.success(request, "Produto deletado com sucesso!")
+                return response
+            else:
+                messages.error(request, "Você não tem permissão para excluir este produto.")
+                return HttpResponseRedirect(self.success_url)
+
         except Exception as e:
             messages.error(request, f"Ocorreu um erro ao deletar o produto: {str(e)}")
             return HttpResponseRedirect(self.success_url)
