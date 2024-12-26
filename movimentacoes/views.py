@@ -3,33 +3,35 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import CreateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from .models import Movimentacoes
 from django.shortcuts import get_object_or_404
-from produto.models import Estoque
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
+from django.contrib import messages  # Para mensagens do front-end
+from .models import Movimentacoes
+from produto.models import Estoque, Produto
+from formato.models import Formato
+from categoria.models import Categoria
 from .forms import MovimentacoesForm
-from formato.models import Formato  # Importação do modelo Categoria
-from categoria.models import Categoria  # Importação do modelo Categoria
-from django.http import HttpResponse
-from django.http import JsonResponse
-from produto.models import Produto  # Certifique-se de que está importando o modelo Produto corretamente
+
 
 def filtrar_produtos_por_formato(request):
-    id_categoria = request.GET.get('id_categoria')  # Corrigido para 'id_categoria'
-    print(id_categoria)
-    if id_categoria:
-        produtos = Produto.objects.filter(id_categoria=id_categoria)
-        produtos_data = [
-            {
-                'id': produto.id,
-                'nome': produto.nome,
-                'formato': produto.formato,
-                'id_formato_id': produto.id_formato.formato  # Corrigido para acessar o objeto relacionado
-            }
-            for produto in produtos
-        ]
-        return JsonResponse(produtos_data, safe=False)
-    return JsonResponse([], safe=False)
+    """Filtra produtos por categoria e formato."""
+    try:
+        id_categoria = request.GET.get('id_categoria')
+        if id_categoria:
+            produtos = Produto.objects.filter(id_categoria=id_categoria)
+            produtos_data = [
+                {
+                    'id': produto.id,
+                    'nome': produto.nome,
+                    'formato': produto.formato,
+                    'id_formato_id': produto.id_formato.formato
+                }
+                for produto in produtos
+            ]
+            return JsonResponse(produtos_data, safe=False)
+        return JsonResponse([], safe=False)
+    except Exception as e:
+        return JsonResponse({'error': f"Erro ao filtrar produtos: {str(e)}"}, status=500)
 
 
 # Listar movimentações
@@ -37,6 +39,16 @@ class MovimentacoesListView(LoginRequiredMixin, ListView):
     model = Movimentacoes
     template_name = 'movimentacoes_list.html'
     context_object_name = 'movimentacoes'
+
+    def get_context_data(self, **kwargs):
+        try:
+            context = super().get_context_data(**kwargs)
+            context['categorias'] = Categoria.objects.all()  # Envia as categorias para o template
+            return context
+        except Exception as e:
+            messages.error(self.request, f"Erro ao carregar movimentações: {str(e)}")
+            return {}
+
 
 # Criar movimentação
 class MovimentacoesCreateView(LoginRequiredMixin, CreateView):
@@ -46,50 +58,57 @@ class MovimentacoesCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('movimentacoes-list')
 
     def form_valid(self, form):
-        form.instance.id_usuario = self.request.user
         try:
+            form.instance.id_usuario = self.request.user
             estoque = Estoque.objects.get(id_produto=form.cleaned_data['id_produto'])
+            if form.cleaned_data['tipo_movimentacao'] == 'Entrada':
+                estoque.qtde += form.cleaned_data['qtde']
+            elif form.cleaned_data['tipo_movimentacao'] == 'Saída':
+                if estoque.qtde >= form.cleaned_data['qtde']:
+                    estoque.qtde -= form.cleaned_data['qtde']
+                else:
+                    form.add_error('qtde', 'Quantidade insuficiente no estoque.')
+                    return self.form_invalid(form)
+            estoque.save()
+            messages.success(self.request, "Movimentação criada com sucesso!")
+            return super().form_valid(form)
         except Estoque.DoesNotExist:
             form.add_error('id_produto', 'Produto não encontrado no estoque.')
             return self.form_invalid(form)
+        except Exception as e:
+            messages.error(self.request, f"Erro ao criar movimentação: {str(e)}")
+            return self.form_invalid(form)
 
-        if form.cleaned_data['tipo_movimentacao'] == 'Entrada':
-            estoque.qtde += form.cleaned_data['qtde']
-        elif form.cleaned_data['tipo_movimentacao'] == 'Saída':
-            if estoque.qtde >= form.cleaned_data['qtde']:
-                estoque.qtde -= form.cleaned_data['qtde']
-            else:
-                form.add_error('qtde', 'Quantidade insuficiente no estoque.')
-                return self.form_invalid(form)
-
-        estoque.save()
-        return super().form_valid(form)
     def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['categorias'] = Categoria.objects.all()  # Envia as categorias para o template
-        return context
+        try:
+            context = super().get_context_data(**kwargs)
+            context['categorias'] = Categoria.objects.all()  # Envia as categorias para o template
+            return context
+        except Exception as e:
+            messages.error(self.request, f"Erro ao carregar contexto: {str(e)}")
+            return {}
 
+
+# Deletar movimentação
 class MovimentacoesDeleteView(LoginRequiredMixin, DeleteView):
     model = Movimentacoes
     template_name = 'movimentacoes_confirm_delete.html'
     success_url = reverse_lazy('movimentacoes-list')
 
     def delete(self, request, *args, **kwargs):
-        obj = self.get_object()  # Obter a movimentação que será deletada
+        obj = self.get_object()
         try:
-            estoque = Estoque.objects.get(id_produto=obj.id_produto)  # Obter o estoque do produto relacionado
+            estoque = Estoque.objects.get(id_produto=obj.id_produto)
+            if obj.tipo_movimentacao == 'Entrada':
+                estoque.qtde -= obj.qtde
+            elif obj.tipo_movimentacao == 'Saída':
+                estoque.qtde += obj.qtde
+            estoque.save()
+            messages.success(request, "Movimentação excluída e estoque atualizado com sucesso!")
+            return super().delete(request, *args, **kwargs)
         except Estoque.DoesNotExist:
+            messages.error(request, "Estoque não encontrado para o produto relacionado.")
             return HttpResponse("Estoque não encontrado para o produto", status=400)
-
-        # Atualizar o estoque de acordo com o tipo de movimentação
-        if obj.tipo_movimentacao == 'Entrada':
-            estoque.qtde -= obj.qtde  # Reduzir a quantidade no estoque
-        elif obj.tipo_movimentacao == 'Saída':
-            estoque.qtde += obj.qtde  # Adicionar a quantidade de volta ao estoque
-
-        estoque.save()  # Salvar as mudanças no estoque
-
-        # Agora, realiza a exclusão da movimentação
-        return super().delete(request, *args, **kwargs)
-
-
+        except Exception as e:
+            messages.error(request, f"Erro ao deletar movimentação: {str(e)}")
+            return HttpResponse(f"Erro: {str(e)}", status=500)

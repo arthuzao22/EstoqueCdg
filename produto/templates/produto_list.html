@@ -10,13 +10,15 @@
       </div>
 
       <!-- Botões de Filtro -->
-      <div class="mb-3 text-center">
-        <form method="get" action="{% url 'produto-list' %}">
-          <button id="printButton" class="btn btn-outline-primary mx-1">Todos</button>
-          {% for categoria in categorias %}
-            <a class="btn btn-outline-secondary mx-1" id="printButton" href="?categorias_filter={{ categoria.id }}">{{ categoria.categoria }}</a>
-          {% endfor %}
-        </form>
+      <div class="mb-3 text-center d-flex justify-content-center">
+        <div class="overflow-auto d-flex justify-content-center flex-nowrap">
+          <form method="get" action="{% url 'produto-list' %}" class="d-flex">
+            <button id="printButton" class="btn btn-outline-primary mx-1 flex-shrink-0">Todos</button>
+            {% for categoria in categorias %}
+              <a class="btn btn-outline-secondary mx-1 flex-shrink-0" id="printButton" href="?categorias_filter={{ categoria.id }}">{{ categoria.categoria }}</a>
+            {% endfor %}
+          </form>
+        </div>
       </div>
 
       <div class="btns d-flex">
@@ -35,10 +37,11 @@
                   {{ produto.nome }}
                   {{ produto.formato|default:'' }}
                   {% if produto.id_categoria.img %}
-                    <img src="{{ produto.id_categoria.img.url }}" alt="{{ categoria.categoria }}" class="bi bi-pencil-square float-end" style="max-width: 30%;">
+                    <img src="{{ produto.id_categoria.img.url }}" alt="{{ categoria.categoria }}" class="bi bi-pencil-square float-end" style="max-width: 30%;" />
                   {% endif %}
                 </h5>
                 <p class="card-text">
+                  <strong>Data:</strong> {{ produto.data_cadastro }}<br />
                   <strong>Categoria:</strong> {{ produto.id_categoria }}<br />
                   <strong>Quantidade:</strong> {{ produto.unidades }} unidades em cada {{ produto.id_formato }}
                 </p>

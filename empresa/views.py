@@ -1,10 +1,10 @@
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, CreateView, DeleteView
-from .models import Empresa
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages  # Para mensagens do front-end
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
-from django.urls import reverse_lazy, reverse
+from .models import Empresa
 
 
 # Lista de empresas
@@ -12,18 +12,30 @@ class EmpresaListView(LoginRequiredMixin, ListView):
     model = Empresa
     template_name = 'empresa_list.html'
     context_object_name = 'empresas'
+
     def get(self, request):
-        empresas = Empresa.objects.all()  # Obtenha a lista de empresas
-        return render(request, 'empresa_list.html', {'empresas': empresas})
+        try:
+            empresas = Empresa.objects.all()  # Obtenha a lista de empresas
+            return render(request, 'empresa_list.html', {'empresas': empresas})
+        except Exception as e:
+            messages.error(request, f"Erro ao carregar a lista de empresas: {str(e)}")
+            return render(request, 'empresa_list.html', {'empresas': []})
 
     def post(self, request):
-        # Receba os dados enviados via POST
-        nova_empresa = request.POST.get('empresa')
-        nova_endereco = request.POST.get('endereco')
-        print(nova_empresa)
-        if nova_empresa:
-            Empresa.objects.create(nome=nova_empresa, endereco=nova_endereco)  # Cria uma nova empresa
-        return HttpResponseRedirect(reverse('empresa-list'))
+        try:
+            # Receba os dados enviados via POST
+            nova_empresa = request.POST.get('empresa')
+            nova_endereco = request.POST.get('endereco')
+            if nova_empresa:
+                Empresa.objects.create(nome=nova_empresa, endereco=nova_endereco)  # Cria uma nova empresa
+                messages.success(request, "Empresa criada com sucesso!")
+            else:
+                messages.error(request, "Por favor, insira um nome de empresa válido.")
+            return HttpResponseRedirect(reverse('empresa-list'))
+        except Exception as e:
+            messages.error(request, f"Erro ao criar a empresa: {str(e)}")
+            return HttpResponseRedirect(reverse('empresa-list'))
+
 
 # Criar uma nova empresa
 class EmpresaCreateView(LoginRequiredMixin, CreateView):
@@ -32,8 +44,26 @@ class EmpresaCreateView(LoginRequiredMixin, CreateView):
     fields = ['nome', 'endereco']
     success_url = reverse_lazy('empresa-list')
 
+    def form_valid(self, form):
+        try:
+            messages.success(self.request, "Empresa criada com sucesso!")
+            return super().form_valid(form)
+        except Exception as e:
+            messages.error(self.request, f"Erro ao criar a empresa: {str(e)}")
+            return self.form_invalid(form)
+
+
 # Deletar uma empresa
 class EmpresaDeleteView(LoginRequiredMixin, DeleteView):
     model = Empresa
     template_name = 'empresa_confirm_delete.html'
     success_url = reverse_lazy('empresa-list')
+
+    def delete(self, request, *args, **kwargs):
+        try:
+            response = super().delete(request, *args, **kwargs)
+            messages.success(request, "Empresa deletada com sucesso!")
+            return response
+        except Exception as e:
+            messages.error(request, f"Erro ao deletar a empresa: {str(e)}")
+            return HttpResponseRedirect(self.success_url)
