@@ -7,7 +7,8 @@ SECRET_KEY = 'django-insecure-essns=lr^jj^!!2w$&l12h5n*ec=!=3^o#^2h(ko^xdqwrug*b
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '192.168.2.127', 'estoquecdg.onrender.com']
+ALLOWED_HOSTS = ['.onrender.com', 'localhost']
+CSRF_TRUSTED_ORIGINS = ['https://estoquecdg.onrender.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
