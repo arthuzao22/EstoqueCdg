@@ -22,6 +22,8 @@ def login_view(request):
             else:
                 messages.error(request, "Usuário ou senha inválidos.")
         except Exception as e:
+            # Exibe o erro no console
+            print(f"Ocorreu um erro: {str(e)}")
             messages.error(request, f"Ocorreu um erro: {str(e)}")
     else:
         form = AuthenticationForm()

@@ -33,7 +33,7 @@ class ProdutoListView(LoginRequiredMixin, ListView):
             if categorias_filter:
                 queryset = queryset.filter(id_categoria=categorias_filter)  # Filtra produtos por categoria
             else:
-                queryset = queryset.filter(id_categoria=2)  # Filtro padrão (id_categoria=1)
+                queryset = queryset.filter(id_categoria=1)  # Filtro padrão (id_categoria=1)
             return queryset
         except Exception as e:
             messages.error(self.request, f"Ocorreu um erro ao filtrar os produtos: {str(e)}")
@@ -127,7 +127,7 @@ class EstoqueListView(LoginRequiredMixin, ListView):
             if categorias_filter:
                 queryset = queryset.filter(id_produto__id_categoria=categorias_filter)
             else:
-                queryset = queryset.filter(id_produto__id_categoria=2)  # Filtro padrão (id_categoria=1)
+                queryset = queryset.filter(id_produto__id_categoria=1)  # Filtro padrão (id_categoria=1)
 
             return queryset
         except Exception as e:
