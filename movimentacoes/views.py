@@ -41,8 +41,9 @@ class MovimentacoesListView(LoginRequiredMixin, ListView):
     context_object_name = 'movimentacoes'  # Define o nome do contexto para o template
 
     def get_queryset(self):
-        # Retorna o queryset filtrado e ordenado
-        return Movimentacoes.objects.order_by("-id")
+        # Retorna o queryset filtrado e ordenado, limitado a 20 registros
+        return Movimentacoes.objects.order_by("-id")[:20]
+
 
     def get_context_data(self, **kwargs):
         try:
