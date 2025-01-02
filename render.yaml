@@ -3,7 +3,7 @@ services:
     name: EstoqueCdg
     env: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "gunicorn systemestoque.wsgi:application --bind 0.0.0.0:8000"
+    startCommand: "gunicorn systemestoque.wsgi:application --bind 0.0.0.0:$PORT"
     plan: free
     regions:
       - oregon
