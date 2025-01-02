@@ -4,13 +4,7 @@ services:
     env: python
     buildCommand: "pip install -r requirements.txt"
     startCommand: "gunicorn systemestoque.wsgi:application --bind 0.0.0.0:$PORT"
-    plan: free
-    regions:
-      - oregon
     envVars:
-      - key: DJANGO_SECRET_KEY
-        value: "django-insecure-essns=lr^jj^!!2w$&l12h5n*ec=!=3^o#^2h(ko^xdqwrug*b"
-      - key: DATABASE_URL
-        value: "mysql://arthuzao:2CT.qtr@3FzUYU9@mysql.uhserver.com:3306/estoquecdg"
-      - key: DEBUG
-        value: "false"
+      - key: SECRET_KEY
+        value: your-secret-key
+

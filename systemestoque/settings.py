@@ -7,8 +7,8 @@ SECRET_KEY = 'django-insecure-essns=lr^jj^!!2w$&l12h5n*ec=!=3^o#^2h(ko^xdqwrug*b
 
 DEBUG = True
 
-#ALLOWED_HOSTS = ['.onrender.com', 'localhost', 'estoquecdg.onrender.com']
 ALLOWED_HOSTS = ['.onrender.com', 'localhost']
+#ALLOWED_HOSTS = ['*']
 CSRF_TRUSTED_ORIGINS = ['https://estoquecdg.onrender.com']
 
 
