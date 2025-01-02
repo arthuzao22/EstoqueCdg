@@ -11,23 +11,32 @@ from produto.models import Estoque, Produto
 from formato.models import Formato
 from categoria.models import Categoria
 from .forms import MovimentacoesForm
+from django.core.cache import cache
+from django.core.cache import cache
+import logging
 
+logger = logging.getLogger(__name__)
 
 def filtrar_produtos_por_formato(request):
     """Filtra produtos por categoria e formato."""
     try:
         id_categoria = request.GET.get('id_categoria')
         if id_categoria:
-            produtos = Produto.objects.filter(id_categoria=id_categoria)
-            produtos_data = [
-                {
-                    'id': produto.id,
-                    'nome': produto.nome,
-                    'formato': produto.formato,
-                    'id_formato_id': produto.id_formato.formato
-                }
-                for produto in produtos
-            ]
+            cache_key = f'produtos_categoria_{id_categoria}'
+            produtos_data = cache.get(cache_key)
+            if not produtos_data:
+                # Se não encontrar no cache, realiza a consulta e armazena no cache
+                produtos = Produto.objects.filter(id_categoria=id_categoria)
+                produtos_data = [
+                    {
+                        'id': produto.id,
+                        'nome': produto.nome,
+                        'formato': produto.formato,
+                        'id_formato_id': produto.id_formato.formato
+                    }
+                    for produto in produtos
+                ]
+                cache.set(cache_key, produtos_data, timeout=3600)  # Armazena por 1 hora
             return JsonResponse(produtos_data, safe=False)
         return JsonResponse([], safe=False)
     except Exception as e:
@@ -41,20 +50,27 @@ class MovimentacoesListView(LoginRequiredMixin, ListView):
     context_object_name = 'movimentacoes'  # Define o nome do contexto para o template
 
     def get_queryset(self):
-        # Retorna o queryset filtrado e ordenado, limitado a 20 registros
-        return Movimentacoes.objects.order_by("-id")[:20]
-
+        cache_key = 'movimentacoes_lista'
+        movimentacoes = cache.get(cache_key)
+        if movimentacoes:
+            logger.info("Dados carregados do cache!")
+            print("Cache funcionando: Dados carregados do cache!")
+        else:
+            logger.info("Cache vazio. Consultando o banco de dados.")
+            print("Cache vazio: Consultando o banco de dados.")
+            movimentacoes = Movimentacoes.objects.order_by("-id")[:20]
+            cache.set(cache_key, movimentacoes, timeout=3600)
+        return movimentacoes
 
     def get_context_data(self, **kwargs):
         try:
-            # Adiciona as categorias ao contexto
             context = super().get_context_data(**kwargs)
             context['categorias'] = Categoria.objects.order_by("id").filter(id=True)
             return context
         except Exception as e:
-            # Exibe mensagem de erro caso ocorra
             messages.error(self.request, f"Erro ao carregar movimentações: {str(e)}")
             return {}
+
 
 
 
@@ -63,7 +79,7 @@ class MovimentacoesCreateView(LoginRequiredMixin, CreateView):
     model = Movimentacoes
     form_class = MovimentacoesForm
     template_name = 'movimentacoes_form.html'
-    success_url = reverse_lazy('movimentacoes-list')
+    success_url = reverse_lazy('movimentacoes-create')
 
     def form_valid(self, form):
         try:
