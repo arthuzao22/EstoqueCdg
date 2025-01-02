@@ -14,10 +14,3 @@ services:
         value: "mysql://arthuzao:2CT.qtr@3FzUYU9@mysql.uhserver.com:3306/estoquecdg"
       - key: DEBUG
         value: "false"
-  - type: database
-    name: mysql-database
-    plan: free
-    engine: mysql
-    version: "5.7"
-    regions:
-      - oregon
