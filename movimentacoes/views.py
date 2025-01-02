@@ -36,18 +36,25 @@ def filtrar_produtos_por_formato(request):
 
 # Listar movimentações
 class MovimentacoesListView(LoginRequiredMixin, ListView):
-    model = Movimentacoes
+    model = Movimentacoes  # Define o modelo usado
     template_name = 'movimentacoes_list.html'
-    context_object_name = 'movimentacoes'
+    context_object_name = 'movimentacoes'  # Define o nome do contexto para o template
+
+    def get_queryset(self):
+        # Retorna o queryset filtrado e ordenado
+        return Movimentacoes.objects.order_by("-id")
 
     def get_context_data(self, **kwargs):
         try:
+            # Adiciona as categorias ao contexto
             context = super().get_context_data(**kwargs)
-            context['categorias'] = Categoria.objects.all()  # Envia as categorias para o template
+            context['categorias'] = Categoria.objects.order_by("id").filter(id=True)
             return context
         except Exception as e:
+            # Exibe mensagem de erro caso ocorra
             messages.error(self.request, f"Erro ao carregar movimentações: {str(e)}")
             return {}
+
 
 
 # Criar movimentação

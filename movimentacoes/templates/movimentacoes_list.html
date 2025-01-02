@@ -1,3 +1,5 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="pt-br">
   {% include 'components/header/header.html' %}
@@ -36,8 +38,8 @@
             ">{{ movimentacao.id_usuario.username|slice:'3'|upper }}</div>
               </td>
               <td>{{ movimentacao.tipo_movimentacao }}</td>
-              <td>{{ movimentacao.data }}</td>
-              <td>{{ movimentacao.id_produto.nome }}</td>
+              <td>{{ movimentacao.data_chegada_saida }}</td>
+              <td>{{ movimentacao.id_produto.nome }} {{ movimentacao.id_produto.formato|default:'' }}</td>
               <td>{{ movimentacao.id_produto.id_categoria }}</td>
               <td> <strong>{{ movimentacao.qtde }} - {{ movimentacao.id_produto.id_formato }} </strong></td>
               <td>

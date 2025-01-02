@@ -31,8 +31,9 @@
         <tbody>
           {% for estoque in estoques %}
             <tr>
-              <td>{{ estoque.id_produto.nome }} {{ estoque.id_produto.formato|default:'' }}</td>
-              <td class="numero">{{ estoque.qtde }} {{ estoque.id_produto.id_formato.formato }}</td>
+              <td>
+                {{ estoque.id_produto.nome }} {{ estoque.id_produto.formato|default:'' }}</td>
+              <td>{{ estoque.qtde }} {{ estoque.id_produto.id_formato.formato }}</td>
               <td class="numero">{{ estoque.calculo }}</td>
             </tr>
           {% empty %}

@@ -16,7 +16,7 @@ class ProdutoListView(LoginRequiredMixin, ListView):
     model = Produto
     template_name = 'produto_list.html'
     context_object_name = 'produtos'
-
+    
     def get_context_data(self, **kwargs):
         try:
             context = super().get_context_data(**kwargs)
@@ -106,6 +106,9 @@ class EstoqueListView(LoginRequiredMixin, ListView):
     model = Estoque
     template_name = 'estoque/estoque_list.html'
     context_object_name = 'estoques'
+    
+    def get_queryset(self):
+        return Estoque.objects.exclude(qtde=0)
 
     def get_context_data(self, **kwargs):
         try:
@@ -125,9 +128,9 @@ class EstoqueListView(LoginRequiredMixin, ListView):
             queryset = super().get_queryset()
             categorias_filter = self.request.GET.get('categorias_filter')  # Parâmetro da URL
             if categorias_filter:
-                queryset = queryset.filter(id_produto__id_categoria=categorias_filter)
+                queryset = queryset.filter(id_produto__id_categoria=categorias_filter).exclude(qtde=0)
             else:
-                queryset = queryset.filter(id_produto__id_categoria=1)  # Filtro padrão (id_categoria=1)
+                queryset = queryset.filter(id_produto__id_categoria=1).exclude(qtde=0)  # Filtro padrão (id_categoria=1)
 
             return queryset
         except Exception as e:
