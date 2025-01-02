@@ -5,11 +5,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = 'django-insecure-essns=lr^jj^!!2w$&l12h5n*ec=!=3^o#^2h(ko^xdqwrug*b'
 
-DEBUG = True
+DEBUG = True 
 
-ALLOWED_HOSTS = ['.onrender.com', 'localhost']
-#ALLOWED_HOSTS = ['*']
-CSRF_TRUSTED_ORIGINS = ['https://estoquecdg.onrender.com']
+ALLOWED_HOSTS = ['.onrender.com', 'estoquecdg.onrender.com', 'localhost']
 
 
 INSTALLED_APPS = [
