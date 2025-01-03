@@ -59,29 +59,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'systemestoque.wsgi.application'
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'estoquecdg',  # Nome do banco de dados
-        'USER': 'arthuzao',  # Usuário
-        'PASSWORD': '2CT.qtr@3FzUYU9',  # Senha
-        'HOST': 'mysql.uhserver.com',  # Hostname do servidor
-        'PORT': '3306',  # Porta do MySQL
-        'OPTIONS': {
-            'ssl': {'ssl_disabled': True},
-        },
-    }
-}
-
-
-
-
 #DATABASES = {
 #    'default': {
-#        'ENGINE': 'django.db.backends.sqlite3',
-#        'NAME': str(BASE_DIR / 'db.sqlite3'),  # Convert Path to string
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'estoquecdg',  # Nome do banco de dados
+#        'USER': 'arthuzao',  # Usuário
+#        'PASSWORD': '2CT.qtr@3FzUYU9',  # Senha
+#        'HOST': 'mysql.uhserver.com',  # Hostname do servidor
+#        'PORT': '3306',  # Porta do MySQL
+#        'OPTIONS': {
+#            'ssl': {'ssl_disabled': True},
+#        },
 #    }
 #}
+
+
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': str(BASE_DIR / 'db.sqlite3'),  # Convert Path to string
+    }
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
