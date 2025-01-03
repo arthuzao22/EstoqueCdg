@@ -11,8 +11,6 @@ from produto.models import Estoque, Produto
 from formato.models import Formato
 from categoria.models import Categoria
 from .forms import MovimentacoesForm
-from django.core.cache import cache
-from django.core.cache import cache
 import logging
 
 logger = logging.getLogger(__name__)
@@ -22,21 +20,16 @@ def filtrar_produtos_por_formato(request):
     try:
         id_categoria = request.GET.get('id_categoria')
         if id_categoria:
-            cache_key = f'produtos_categoria_{id_categoria}'
-            produtos_data = cache.get(cache_key)
-            if not produtos_data:
-                # Se não encontrar no cache, realiza a consulta e armazena no cache
-                produtos = Produto.objects.filter(id_categoria=id_categoria)
-                produtos_data = [
-                    {
-                        'id': produto.id,
-                        'nome': produto.nome,
-                        'formato': produto.formato,
-                        'id_formato_id': produto.id_formato.formato
-                    }
-                    for produto in produtos
-                ]
-                cache.set(cache_key, produtos_data, timeout=3600)  # Armazena por 1 hora
+            produtos = Produto.objects.filter(id_categoria=id_categoria)
+            produtos_data = [
+                {
+                    'id': produto.id,
+                    'nome': produto.nome,
+                    'formato': produto.formato,
+                    'id_formato_id': produto.id_formato.formato
+                }
+                for produto in produtos
+            ]
             return JsonResponse(produtos_data, safe=False)
         return JsonResponse([], safe=False)
     except Exception as e:
@@ -45,22 +38,13 @@ def filtrar_produtos_por_formato(request):
 
 # Listar movimentações
 class MovimentacoesListView(LoginRequiredMixin, ListView):
-    model = Movimentacoes  # Define o modelo usado
+    model = Movimentacoes
     template_name = 'movimentacoes_list.html'
-    context_object_name = 'movimentacoes'  # Define o nome do contexto para o template
+    context_object_name = 'movimentacoes'
 
     def get_queryset(self):
-        cache_key = 'movimentacoes_lista'
-        movimentacoes = cache.get(cache_key)
-        if movimentacoes:
-            logger.info("Dados carregados do cache!")
-            print("Cache funcionando: Dados carregados do cache!")
-        else:
-            logger.info("Cache vazio. Consultando o banco de dados.")
-            print("Cache vazio: Consultando o banco de dados.")
-            movimentacoes = Movimentacoes.objects.order_by("-id")[:20]
-            cache.set(cache_key, movimentacoes, timeout=3600)
-        return movimentacoes
+        logger.info("Consultando o banco de dados para listar movimentações.")
+        return Movimentacoes.objects.order_by("-id")[:20]
 
     def get_context_data(self, **kwargs):
         try:
@@ -70,8 +54,6 @@ class MovimentacoesListView(LoginRequiredMixin, ListView):
         except Exception as e:
             messages.error(self.request, f"Erro ao carregar movimentações: {str(e)}")
             return {}
-
-
 
 
 # Criar movimentação
@@ -106,7 +88,7 @@ class MovimentacoesCreateView(LoginRequiredMixin, CreateView):
     def get_context_data(self, **kwargs):
         try:
             context = super().get_context_data(**kwargs)
-            context['categorias'] = Categoria.objects.all()  # Envia as categorias para o template
+            context['categorias'] = Categoria.objects.all()
             return context
         except Exception as e:
             messages.error(self.request, f"Erro ao carregar contexto: {str(e)}")
