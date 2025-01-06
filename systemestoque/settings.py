@@ -1,6 +1,5 @@
 from pathlib import Path
 import os
-import django_heroku
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -74,7 +73,16 @@ DATABASES = {
     }
 }
 
-
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.postgresql',
+#        'NAME': 'estoque_cdg',  # Nome do banco de dados
+#        'USER': 'estoque_cdg_user',  # Usuário
+#        'PASSWORD': 'nN3P1S5jCi6DeRIocPRRdGCUMSbwy1Mn',  # Senha
+#        'HOST': 'imprudently-savvy-zander.data-1.use1.tembo.io',  # Hostname do servidor
+#        'PORT': '5432',  # Porta do banco de dados
+#    }
+#}
 
 
 #DATABASES = {
@@ -108,4 +116,3 @@ MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-django_heroku.settings(locals())
