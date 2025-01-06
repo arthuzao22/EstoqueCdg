@@ -1,5 +1,6 @@
 from pathlib import Path
 import os
+import django_heroku
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -8,7 +9,7 @@ SECRET_KEY = 'django-insecure-essns=lr^jj^!!2w$&l12h5n*ec=!=3^o#^2h(ko^xdqwrug*b
 DEBUG = True 
 
 #ALLOWED_HOSTS = ['.onrender.com', 'estoquecdg.onrender.com', 'localhost']
-ALLOWED_HOSTS = ['https://estoque-cdg-65731443ebb6.herokuapp.com/']
+ALLOWED_HOSTS = ['*']
 
 
 INSTALLED_APPS = [
@@ -106,3 +107,5 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+django_heroku.settings(locals())
