@@ -67,6 +67,7 @@ DATABASES = {
         'PASSWORD': '2CT.qtr@3FzUYU9',  # Senha
         'HOST': 'mysql.uhserver.com',  # Hostname do servidor
         'PORT': '3306',  # Porta do MySQL
+        'CONN_MAX_AGE': 600,  # Conexão persistente por 10 minutos
         'OPTIONS': {
             'ssl': {'ssl_disabled': True},
         },
