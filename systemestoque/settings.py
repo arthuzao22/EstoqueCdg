@@ -59,31 +59,32 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'systemestoque.wsgi.application'
 
+#DATABASES = {
+#    'default': {
+#        'ENGINE': 'django.db.backends.mysql',
+#        'NAME': 'estoquecdg',  # Nome do banco de dados
+#        'USER': 'arthuzao',  # Usuário
+#        'PASSWORD': '2CT.qtr@3FzUYU9',  # Senha
+#        'HOST': 'mysql.uhserver.com',  # Hostname do servidor
+#        'PORT': '3306',  # Porta do MySQL
+#        'CONN_MAX_AGE': 600,  # Conexão persistente por 10 minutos
+#        'OPTIONS': {
+#            'ssl': {'ssl_disabled': True},
+#        },
+#    }
+#}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'estoquecdg',  # Nome do banco de dados
-        'USER': 'arthuzao',  # Usuário
-        'PASSWORD': '2CT.qtr@3FzUYU9',  # Senha
-        'HOST': 'mysql.uhserver.com',  # Hostname do servidor
-        'PORT': '3306',  # Porta do MySQL
-        'CONN_MAX_AGE': 600,  # Conexão persistente por 10 minutos
-        'OPTIONS': {
-            'ssl': {'ssl_disabled': True},
-        },
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'estoque_cdg',  # Nome do banco de dados
+        'USER': 'estoque_cdg_user',  # Nome de usuário
+        'PASSWORD': 'nN3P1S5jCi6DeRIocPRRdGCUMSbwy1Mn',  # Senha
+        'HOST': 'dpg-ctttq1bqf0us73eut2cg-a.oregon-postgres.render.com',  # Host externo
+        'PORT': '5432',  # Porta
     }
 }
 
-#DATABASES = {
-#    'default': {
-#        'ENGINE': 'django.db.backends.postgresql',
-#        'NAME': 'estoque_cdg',  # Nome do banco de dados
-#        'USER': 'estoque_cdg_user',  # Usuário
-#        'PASSWORD': 'nN3P1S5jCi6DeRIocPRRdGCUMSbwy1Mn',  # Senha
-#        'HOST': 'imprudently-savvy-zander.data-1.use1.tembo.io',  # Hostname do servidor
-#        'PORT': '5432',  # Porta do banco de dados
-#    }
-#}
 
 
 #DATABASES = {
@@ -102,7 +103,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'pt-br'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Los_Angeles'
 
 USE_I18N = True
 
