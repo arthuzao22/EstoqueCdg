@@ -17,23 +17,23 @@
       <div class="col-12 col-sm-6 col-md-3 mb-4">
         <div class="card text-white text-center shadow" style="background-color: #24969d;">
           <div class="card-body">
-            <h6 class="card-title">19 Itens no Estoque</h6>
-            <a href="#" class="btn btn-light">Ver Relação de Produtos</a>
+            <h6 class="card-title">{{ cont_estoque }} Itens no Estoque</h6>
+            <a href="/estoque" class="btn btn-light">Ver Relação de Produtos</a>
           </div>
         </div>
       </div>
       <div class="col-12 col-sm-6 col-md-3 mb-4">
         <div class="card bg-danger text-white text-center shadow">
           <div class="card-body">
-            <h6 class="card-title">2 Produtos com Estoque Zerado</h6>
-            <a href="#" class="btn btn-light">Ver Estoque Zerado</a>
+            <h6 class="card-title">{{ cont_estoque_zerado }} Produtos com Estoque Zerado</h6>
+            <a data-no-loading type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">Ver Estoque Zerado</a>
           </div>
         </div>
       </div>
       <div class="col-12 col-sm-6 col-md-3 mb-4">
         <div class="card text-white text-center shadow" style="background-color: #F8B739;">
           <div class="card-body">
-            <h6 class="card-title">3 Produtos com Estoque Mínimo</h6>
+            <h6 class="card-title">{{ cont_estoque_min }} Produtos com o estoque abaixo do mínimo</h6>
             <a href="#" class="btn btn-light">Ver Prod. Estoque Mínimo</a>
           </div>
         </div>
@@ -41,8 +41,8 @@
       <div class="col-12 col-sm-6 col-md-3 mb-4">
         <div class="card bg-success text-white text-center shadow">
           <div class="card-body">
-            <h6 class="card-title">143 Movimentações</h6>
-            <a href="#" class="btn btn-light">Ver Movimentações</a>
+            <h6 class="card-title">0 Movimentações</h6>
+            <a href="/movimentacoes/" class="btn btn-light">Ver Movimentações</a>
           </div>
         </div>
       </div>
@@ -137,6 +137,7 @@
       })
     </script>
 
+    {% include 'components/modais/modal_zerado.html' %}
     {% include 'components/footer/footer.html' %}
   </body>
 </html>
