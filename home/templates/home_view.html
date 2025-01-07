@@ -6,7 +6,11 @@
   <body>
     <center>
       <div>
-        <h4 class="d-block">Bem-vindo, {{ username }}!</h4>
+        <h4 class="d-block">
+          <strong>
+            Bem-vindo, {{ username }}!
+          </strong>
+        </h4>
       </div>
     </center>
 
@@ -33,7 +37,8 @@
       <div class="col-12 col-sm-6 col-md-3 mb-4">
         <div class="card text-white text-center shadow" style="background-color: #F8B739;">
           <div class="card-body">
-            <h6 class="card-title">{{ cont_estoque_min }} Produtos com o estoque abaixo do mínimo</h6>
+            <h6 class="card-title">
+              {{ cont_estoque_min }} Produtos com o estoque abaixo do mínimo</h6>
             <a href="#" class="btn btn-light">Ver Prod. Estoque Mínimo</a>
           </div>
         </div>
