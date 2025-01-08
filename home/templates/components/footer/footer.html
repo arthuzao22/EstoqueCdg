@@ -16,7 +16,6 @@
     </div>
   </div>
 </div>
-
 {% if messages %}
 <script>
     document.addEventListener("DOMContentLoaded", function() {
@@ -54,6 +53,71 @@
   
 </div>
 <script>
+  
+  // Seleciona o overlay e o spinner
+const overlay = document.getElementById('loading-overlay');
+
+// Função para mostrar o overlay e o spinner
+function showSpinner() {
+  overlay.classList.remove('d-none');
+}
+
+// Função para esconder o overlay e o spinner
+function hideSpinner() {
+  overlay.classList.add('d-none');
+}
+
+// Selecionar todos os botões e links
+const clickableElements = document.querySelectorAll('a, button, .btn-danger');
+
+// Adicionar evento de clique
+clickableElements.forEach(element => {
+  element.addEventListener('click', event => {
+    // Verifica se o elemento possui a classe ou atributo para ignorar o loading
+    if (element.hasAttribute('data-no-loading') || element.classList.contains('no-loading')) {
+      return; // Não ativa o spinner
+    }
+
+    // Ativa o spinner para outros botões/links
+    showSpinner();
+  });
+});
+
+// Exemplo: Requisições fetch
+(function () {
+  const originalFetch = window.fetch;
+  window.fetch = function (...args) {
+    showSpinner(); // Mostra o spinner antes da requisição
+    return originalFetch(...args)
+      .then(response => {
+        hideSpinner(); // Esconde o spinner após a resposta
+        return response;
+      })
+      .catch(error => {
+        hideSpinner(); // Esconde o spinner em caso de erro
+        throw error;
+      });
+  };
+})();
+
+// Mostra o spinner ao mudar de página
+window.addEventListener('beforeunload', showSpinner);
+
+// --- Adicionado: Parar o spinner quando o usuário voltar/avançar no navegador ---
+
+// O evento "popstate" detecta mudanças no histórico (botões voltar/avançar)
+window.addEventListener('popstate', hideSpinner);
+
+// O evento "pageshow" é acionado quando a página é carregada do cache
+window.addEventListener('pageshow', () => {
+  hideSpinner(); // Garante que o spinner desapareça ao voltar/avançar entre páginas
+});
+
+// Garantir que o spinner desapareça após o carregamento completo da página
+window.addEventListener('load', hideSpinner);
+
+  // Garantir que o spinner desapareça após o carregamento completo da página
+  window.addEventListener('load', hideSpinner);
   document.addEventListener('DOMContentLoaded', function () {
     function pegarFiltroCategoria() {
       const params = new URLSearchParams(window.location.search);
@@ -75,77 +139,6 @@
     // Chama a função ao carregar a página
     pegarFiltroCategoria();
   });
-  
-
-  // Exemplo de uso
-  const filtroArmazenado = pegarFiltroCategoria();
-
-
-
-
-  // Seleciona o overlay e o spinner
-  const overlay = document.getElementById('loading-overlay');
-
-  // Função para mostrar o overlay e o spinner
-  function showSpinner() {
-    overlay.classList.remove('d-none');
-  }
-
-  // Função para esconder o overlay e o spinner
-  function hideSpinner() {
-    overlay.classList.add('d-none');
-  }
-
-  // Selecionar todos os botões e links
-  const clickableElements = document.querySelectorAll('a, button, .btn-danger');
-
-  // Adicionar evento de clique
-  clickableElements.forEach(element => {
-    element.addEventListener('click', event => {
-      // Verifica se o elemento possui a classe ou atributo para ignorar o loading
-      if (element.hasAttribute('data-no-loading') || element.classList.contains('no-loading')) {
-        return; // Não ativa o spinner
-      }
-
-      // Ativa o spinner para outros botões/links
-      showSpinner();
-    });
-  });
-
-  // Exemplo: Requisições fetch
-  (function () {
-    const originalFetch = window.fetch;
-    window.fetch = function (...args) {
-      showSpinner(); // Mostra o spinner antes da requisição
-      return originalFetch(...args)
-        .then(response => {
-          hideSpinner(); // Esconde o spinner após a resposta
-          return response;
-        })
-        .catch(error => {
-          hideSpinner(); // Esconde o spinner em caso de erro
-          throw error;
-        });
-    };
-  })();
-
-  // Mostra o spinner ao mudar de página
-  window.addEventListener('beforeunload', showSpinner);
-
-  // --- Adicionado: Parar o spinner quando o usuário voltar/avançar no navegador ---
-
-  // O evento "popstate" detecta mudanças no histórico (botões voltar/avançar)
-  window.addEventListener('popstate', hideSpinner);
-
-  // O evento "pageshow" é acionado quando a página é carregada do cache
-  window.addEventListener('pageshow', () => {
-    hideSpinner(); // Garante que o spinner desapareça ao voltar/avançar entre páginas
-  });
-
-  // Garantir que o spinner desapareça após o carregamento completo da página
-  window.addEventListener('load', hideSpinner);
-
-
 </script>
 
   

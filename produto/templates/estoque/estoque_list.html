@@ -8,19 +8,31 @@
       <h1 class="d-none d-md-block text-center">Lista de Estoque</h1> <!-- Mostrado em telas médias ou maiores -->
       <h4 class="d-block d-md-none text-center">Lista de Estoque</h4> <!-- Mostrado em telas menores -->
     </div>
+
     <!-- Botões de Filtro -->
     <div class="mb-3 d-flex justify-content-center">
       <div class="overflow-auto d-flex justify-content-center flex-nowrap">
         <form method="get" action="{% url 'estoque-list' %}" class="d-flex">
           {% for categoria in categorias %}
-            <a id="btn_color{{ categoria.id }}" class="btn btn-outline-secondary mx-1 flex-shrink-0" 
-               href="?categorias_filter={{ categoria.id }}">{{ categoria.categoria }}</a>
+            <button type="submit" 
+                    name="categorias_filter" 
+                    value="{{ categoria.id }}" 
+                    id="btn_color{{ categoria.id }}" 
+                    class="btn btn-outline-secondary mx-1 flex-shrink-0">
+              {{ categoria.categoria }}
+            </button>
           {% endfor %}
+          <button type="submit" 
+                  name="categorias_filter" 
+                  value="" 
+                  class="btn btn-outline-primary mx-1 flex-shrink-0">
+            Todos
+          </button>
         </form>
       </div>
     </div>
-    
 
+    <!-- Tabela de Estoque -->
     <div class="table-responsive">
       <table class="table table-striped">
         <thead>
@@ -33,31 +45,29 @@
         <tbody>
           {% for estoque in estoques %}
             <tr>
-              <td>
-                {{ estoque.id_produto.nome }} {{ estoque.id_produto.formato|default:'' }}</td>
+              <td>{{ estoque.id_produto.nome }} {{ estoque.id_produto.formato|default:'' }}</td>
               <td>{{ estoque.qtde }} {{ estoque.id_produto.id_formato.formato }}</td>
               <td class="numero">{{ estoque.calculo }}</td>
             </tr>
           {% empty %}
             <tr>
-              <td colspan="5" class="text-center">Nenhum item no estoque.</td>
+              <td colspan="3" class="text-center">Nenhum item no estoque.</td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
-    
   </body>
 
   <script>
     function formatarNumero(numero) {
-      return numero.toLocaleString('pt-BR')
+      return numero.toLocaleString('pt-BR');
     }
-    
+
     // Seleciona todos os elementos com a classe 'numero' e formata o texto
     document.querySelectorAll('.numero').forEach(function (elemento) {
-      elemento.innerText = formatarNumero(parseInt(elemento.innerText) || 0)
-    })
+      elemento.innerText = formatarNumero(parseInt(elemento.innerText) || 0);
+    });
   </script>
   {% include 'components/footer/footer.html' %}
 </html>
