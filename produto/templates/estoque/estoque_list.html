@@ -13,11 +13,13 @@
       <div class="overflow-auto d-flex justify-content-center flex-nowrap">
         <form method="get" action="{% url 'estoque-list' %}" class="d-flex">
           {% for categoria in categorias %}
-            <a class="btn btn-outline-secondary mx-1 flex-shrink-0" href="?categorias_filter={{ categoria.id }}">{{ categoria.categoria }}</a>
+            <a id="btn_color{{ categoria.id }}" class="btn btn-outline-secondary mx-1 flex-shrink-0" 
+               href="?categorias_filter={{ categoria.id }}">{{ categoria.categoria }}</a>
           {% endfor %}
         </form>
       </div>
     </div>
+    
 
     <div class="table-responsive">
       <table class="table table-striped">
