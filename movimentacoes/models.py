@@ -12,7 +12,6 @@ class Movimentacoes(models.Model):
     qtde = models.IntegerField()
     data_chegada_saida = models.DateField()  # Certifique-se de que este campo está presente
     data = models.DateField(auto_now_add=True)
-    id_empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE)
-    id_usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    id_produto = models.ForeignKey(Produto, on_delete=models.CASCADE)
-
+    id_empresa = models.ForeignKey(Empresa, on_delete=models.PROTECT) 
+    id_usuario = models.ForeignKey(User, on_delete=models.PROTECT)    
+    id_produto = models.ForeignKey(Produto, on_delete=models.PROTECT) 

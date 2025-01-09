@@ -30,7 +30,7 @@
         <div class="card bg-danger text-white text-center shadow">
           <div class="card-body">
             <h6 class="card-title">{{ cont_estoque_zerado }} Produtos com Estoque Zerado</h6>
-            <a data-no-loading type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop">Ver Estoque Zerado</a>
+            <a data-no-loading type="button" class="btn" style="background-color: white; color: black;" data-toggle="modal" data-target="#staticBackdrop">Ver Estoque Zerado</a>
           </div>
         </div>
       </div>
@@ -39,14 +39,14 @@
           <div class="card-body">
             <h6 class="card-title">
               {{ cont_estoque_min }} Produtos com o estoque abaixo do mínimo</h6>
-            <a href="#" class="btn btn-light">Ver Prod. Estoque Mínimo</a>
-          </div>
+              <a data-no-loading type="button" class="btn" style="background-color: white; color: black;" data-toggle="modal" data-target="#estoquemin">Ver Estoque Mínimo</a>
+            </div>
         </div>
       </div>
       <div class="col-12 col-sm-6 col-md-3 mb-4">
         <div class="card bg-success text-white text-center shadow">
           <div class="card-body">
-            <h6 class="card-title">0 Movimentações</h6>
+            <h6 class="card-title">{{ cont_movimentacoes }} Movimentações</h6>
             <a href="/movimentacoes/" class="btn btn-light">Ver Movimentações</a>
           </div>
         </div>
@@ -143,6 +143,7 @@
     </script>
 
     {% include 'components/modais/modal_zerado.html' %}
+    {% include 'components/modais/modal_min.html' %}
     {% include 'components/footer/footer.html' %}
   </body>
 </html>

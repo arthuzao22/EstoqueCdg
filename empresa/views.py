@@ -1,5 +1,5 @@
 from django.urls import reverse_lazy, reverse
-from django.views.generic import ListView, CreateView, DeleteView
+from django.views.generic import ListView, CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages  # Para mensagens do front-end
 from django.shortcuts import render
@@ -52,18 +52,3 @@ class EmpresaCreateView(LoginRequiredMixin, CreateView):
             messages.error(self.request, f"Erro ao criar a empresa: {str(e)}")
             return self.form_invalid(form)
 
-
-# Deletar uma empresa
-class EmpresaDeleteView(LoginRequiredMixin, DeleteView):
-    model = Empresa
-    template_name = 'empresa_confirm_delete.html'
-    success_url = reverse_lazy('empresa-list')
-
-    def delete(self, request, *args, **kwargs):
-        try:
-            response = super().delete(request, *args, **kwargs)
-            messages.success(request, "Empresa deletada com sucesso!")
-            return response
-        except Exception as e:
-            messages.error(request, f"Erro ao deletar a empresa: {str(e)}")
-            return HttpResponseRedirect(self.success_url)

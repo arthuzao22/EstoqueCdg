@@ -45,9 +45,7 @@
                       <p class="mb-0 text-muted"><strong>Data de cadastro da {{ empresa.nome }}:</strong> {{ empresa.data }}</p>
                     </div>
                     <!-- Botão deletar -->
-                    <div class="text-nowrap">
-                      <a href="{% url 'empresa-delete' empresa.pk %}" class="btn btn-danger btn-sm">Deletar</a>
-                    </div>
+
                   </li>
                 {% empty %}
                   <li class="list-group-item text-center text-muted">

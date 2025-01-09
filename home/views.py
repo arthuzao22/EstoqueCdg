@@ -3,17 +3,21 @@ from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from django.views import View
 from produto.models import Estoque, Produto
+from movimentacoes.models import Movimentacoes
+
 
 class HomeView(View):
     def get(self, request, *args, **kwargs):
         # Filtra os produtos
         produtos_estoque_zerado = Estoque.objects.filter(qtde=0)
         produtos_estoque = Estoque.objects.all()
+        movimentacoes = Movimentacoes.objects.all()
         produtos_estoque_min = Estoque.objects.filter(qtde__lte=F('id_produto__estoquemin'))
-
+        
         # Conta o número de produtos 
         cont_estoque_zerado = len(produtos_estoque_zerado)
         cont_estoque = len(produtos_estoque)
+        cont_movimentacoes = len(movimentacoes)
         cont_estoque_min = len(produtos_estoque_min)
 
         # ------------------------------------------------------
@@ -30,5 +34,7 @@ class HomeView(View):
             'produtos_estoque_zerado': produtos_estoque_zerado,
             'cont_estoque_zerado': cont_estoque_zerado,
             'cont_estoque': cont_estoque,
-            'cont_estoque_min': cont_estoque_min
+            'cont_estoque_min': cont_estoque_min,
+            'cont_movimentacoes': cont_movimentacoes,
+            'produtos_estoque_min': produtos_estoque_min
         })
