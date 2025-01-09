@@ -29,11 +29,11 @@ class ProdutoListView(LoginRequiredMixin, ListView):
     def get_queryset(self):
         try:
             queryset = super().get_queryset()
-            categorias_filter = self.request.GET.get('categorias_filter')  # Obtém o parâmetro da URL
+            categorias_filter = self.request.GET.get('categorias_filter')
             if categorias_filter:
-                queryset = queryset.filter(id_categoria=categorias_filter)  # Filtra produtos por categoria
+                queryset = queryset.filter(id_categoria=categorias_filter, status=1)
             else:
-                queryset = queryset.filter(id_categoria=1)  # Filtro padrão (id_categoria=1)
+                queryset = queryset.filter(id_categoria=1, status=1)
             return queryset
         except Exception as e:
             messages.error(self.request, f"Ocorreu um erro ao filtrar os produtos: {str(e)}")

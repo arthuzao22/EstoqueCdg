@@ -10,6 +10,7 @@ class Produto(models.Model):
     ]
     formato = models.CharField(max_length=255, choices=FORMATO, null=True, blank=True)  # Permite nulo
     estoquemin = models.IntegerField()
+    status = models.IntegerField()
     id_categoria = models.ForeignKey(Categoria, on_delete=models.PROTECT)  # Alterado para PROTECT
     id_formato = models.ForeignKey(Formato, on_delete=models.PROTECT)  # Alterado para PROTECT
     unidades = models.IntegerField()

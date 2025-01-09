@@ -1,12 +1,11 @@
 from django.db.models import F
 from django.shortcuts import render
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from produto.models import Estoque, Produto
 from movimentacoes.models import Movimentacoes
 
-
-class HomeView(View):
+class HomeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         # Filtra os produtos
         produtos_estoque_zerado = Estoque.objects.filter(qtde=0)

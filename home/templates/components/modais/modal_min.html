@@ -1,40 +1,62 @@
+<!-- Adicione o link da biblioteca SheetJS -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+
 <!-- Modal -->
 <div class="modal fade" id="estoquemin" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content">
-      <div class="modal-header" style="background-color: #F8B739;">
-        <h5 class="modal-title" id="exampleModalLongTitle">Lista de produtos que estão no estoque mínimo</h5>
-        <button data-no-loading type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-      </div>
-      <div class="modal-body">
-        <a href="#" class="card bg-success text-white text-center shadow">Exportar para Excel</a>
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color: #F8B739;">
+                <h5 class="modal-title" id="exampleModalLongTitle">Lista de produtos que estão no estoque mínimo</h5>
+                <button data-no-loading type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <!-- Botão para exportar -->
+                <a data-no-loading href="#" id="exportExcelMin" class="card bg-success text-white text-center shadow">Exportar para Excel</a>
 
-        <div class="table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">Produto</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for produtos_estoque_min in produtos_estoque_min %}
-                        <tr>
-                            <td>{{ produtos_estoque_min.id_produto.nome }}</td>
-                        </tr>
-                    {% empty %}
-                        <tr>
-                            <td colspan="3" class="text-center">Nenhuma movimentação registrada.</td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+                <div class="table-responsive">
+                    <table class="table table-striped" id="estoqueMinTable">
+                        <thead>
+                            <tr>
+                                <th scope="col">Produto</th>
+                                <th scope="col">Quantidade</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for produtos_estoque_min in produtos_estoque_min %}
+                                <tr>
+                                    <td>{{ produtos_estoque_min.id_produto.nome }}</td>
+                                    <td>{{ produtos_estoque_min.qtde }}</td>
+                                </tr>
+                            {% empty %}
+                                <tr>
+                                    <td colspan="3" class="text-center">Nenhuma movimentação registrada.</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button data-no-loading type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button data-no-loading type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
     </div>
-  </div>
 </div>
 
+<script>
+    // Adicione o evento ao botão
+    document.getElementById('exportExcelMin').addEventListener('click', function (event) {
+        event.preventDefault(); // Previne o comportamento padrão do link
 
+        // Captura a tabela
+        const table = document.getElementById('estoqueMinTable');
+        const ws = XLSX.utils.table_to_sheet(table); // Converte a tabela para uma planilha
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, 'Estoque Mínimo');
+
+        // Baixa o arquivo Excel
+        XLSX.writeFile(wb, 'produtos_estoque_min.xlsx');
+    });
+</script>
