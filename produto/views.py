@@ -51,6 +51,8 @@ class ProdutoCreateView(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         try:
             with transaction.atomic():
+                # Define o status como 1 antes de salvar
+                form.instance.status = 1
                 response = super().form_valid(form)
                 # Criação do estoque com quantidade inicial 0
                 Estoque.objects.create(id_produto=self.object, qtde=0)
@@ -59,6 +61,7 @@ class ProdutoCreateView(LoginRequiredMixin, CreateView):
         except Exception as e:
             messages.error(self.request, f"Ocorreu um erro ao criar o produto: {str(e)}")
             return self.form_invalid(form)
+
 
 
 # Atualizar produto
