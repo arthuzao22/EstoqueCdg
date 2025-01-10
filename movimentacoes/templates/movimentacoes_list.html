@@ -6,10 +6,10 @@
 
   <body>
     <div>
-        <h1 class="d-none d-md-block text-center">Lista de Movimentações.</h1> <!-- Mostrado em telas médias ou maiores -->
-        <h4 class="d-block d-md-none text-center">Lista de Movimentações</h4> <!-- Mostrado em telas menores -->
-      </div>
-     <a href="{% url 'movimentacoes-create' %}" class="btn btn-primary mb-3">Nova Movimentação</a>
+      <h1 class="d-none d-md-block text-center">Lista de Movimentações.</h1> <!-- Mostrado em telas médias ou maiores -->
+      <h4 class="d-block d-md-none text-center">Lista de Movimentações</h4> <!-- Mostrado em telas menores -->
+    </div>
+    <a href="{% url 'movimentacoes-create' %}" class="btn btn-primary mb-3">Nova Movimentação</a>
 
     <div class="table-responsive">
       <table class="table table-striped">
@@ -29,32 +29,60 @@
             <tr>
               <td>
                 <div class="user" style="
-                border-style: solid;
-                border-radius: 8px; 
-                text-align: center;
-                border-width: 0.5px;
-                color: white;
-                background-color: #26979E;
-            ">{{ movimentacao.id_usuario.username|slice:'3'|upper }}</div>
+                    border-style: solid;
+                    border-radius: 8px; 
+                    text-align: center;
+                    border-width: 0.5px;
+                    color: white;
+                    background-color: #26979E;">{{ movimentacao.id_usuario.username|slice:'3'|upper }}</div>
               </td>
               <td>{{ movimentacao.tipo_movimentacao }}</td>
               <td>{{ movimentacao.data_chegada_saida }}</td>
               <td>{{ movimentacao.id_produto.nome }} {{ movimentacao.id_produto.formato|default:'' }}</td>
               <td>{{ movimentacao.id_produto.id_categoria }}</td>
-              <td> <strong>{{ movimentacao.qtde }} - {{ movimentacao.id_produto.id_formato }} </strong></td>
               <td>
-                
+                <strong>{{ movimentacao.qtde }} - {{ movimentacao.id_produto.id_formato }}</strong>
+              </td>
+              <td>
                 <a href="{% url 'movimentacoes-delete' movimentacao.pk %}" class="btn btn-danger btn-sm">Deletar</a>
               </td>
             </tr>
           {% empty %}
             <tr>
-              <td colspan="3" class="text-center">Nenhuma movimentação registrada.</td>
+              <td colspan="7" class="text-center">Nenhuma movimentação registrada.</td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
     </div>
+
+    <!-- Paginação corrigida -->
+    <!-- Paginação centralizada -->
+    {% if movimentacoes.has_other_pages %}
+      <div class="d-flex justify-content-center mt-4">
+        <nav aria-label="Navegação de páginas">
+          <ul class="pagination">
+            {% if movimentacoes.has_previous %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ movimentacoes.previous_page_number }}">&laquo;</a>
+              </li>
+            {% endif %}
+
+            {% for page_num in movimentacoes.paginator.page_range %}
+              <li class="page-item {% if page_num == movimentacoes.number %}active{% endif %}">
+                <a class="page-link" href="?page={{ page_num }}">{{ page_num }}</a>
+              </li>
+            {% endfor %}
+
+            {% if movimentacoes.has_next %}
+              <li class="page-item">
+                <a class="page-link" href="?page={{ movimentacoes.next_page_number }}">&raquo;</a>
+              </li>
+            {% endif %}
+          </ul>
+        </nav>
+      </div>
+    {% endif %}
   </body>
 
   {% include 'components/footer/footer.html' %}

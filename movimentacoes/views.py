@@ -11,6 +11,8 @@ from produto.models import Estoque, Produto
 from formato.models import Formato
 from categoria.models import Categoria
 from .forms import MovimentacoesForm
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import render
 import logging
 
 logger = logging.getLogger(__name__)
@@ -41,15 +43,31 @@ class MovimentacoesListView(LoginRequiredMixin, ListView):
     model = Movimentacoes
     template_name = 'movimentacoes_list.html'
     context_object_name = 'movimentacoes'
-
-    def get_queryset(self):
-        logger.info("Consultando o banco de dados para listar movimentações.")
-        return Movimentacoes.objects.order_by("-id")[:20]
+    paginate_by = 10
+    
+    def get(self, request, *args, **kwargs):
+        queryset = Movimentacoes.objects.order_by("-id")
+        paginator = Paginator(queryset, 10)  # Definindo paginação com 10 itens por página
+        
+        page = request.GET.get('page')
+        try:
+            movimentacoes = paginator.get_page(page)
+        except PageNotAnInteger:
+            movimentacoes = paginator.get_page(1)
+        except EmptyPage:
+            movimentacoes = paginator.get_page(paginator.num_pages)
+        
+        context = {
+            'movimentacoes': movimentacoes,
+            'categorias': Categoria.objects.all()
+        }
+        return render(request, self.template_name, context)
 
     def get_context_data(self, **kwargs):
         try:
             context = super().get_context_data(**kwargs)
-            context['categorias'] = Categoria.objects.order_by("id").filter(id=True)
+            categorias = Categoria.objects.order_by("id").filter(id=True)
+            context['categorias'] = categorias
             return context
         except Exception as e:
             messages.error(self.request, f"Erro ao carregar movimentações: {str(e)}")

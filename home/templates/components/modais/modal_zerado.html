@@ -11,8 +11,13 @@
             </div>
             <div class="modal-body">
                 <!-- Botão para exportar -->
-                <a data-no-loading href="#" id="exportExcel" class="card bg-success text-white text-center shadow" >Exportar para Excel</a>
-
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="fw-bold text-primary">Exportar a lista:</span>
+                    <button id="exportExcelMin" class="btn btn-success d-flex align-items-center">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQi9hgzx0qUGxE-HIha6ymd6uG82YtXwJ9mXtseCoBq03HDTPnZNIfrATLQssPjLIGMYs8&usqp=CAU" alt="Exportar" style="width: 20px; height: 20px; margin-right: 5px;">
+                        Exportar para Excel
+                    </button>
+                </div>
                 <div class="table-responsive">
                     <table class="table table-striped" id="estoqueZeradoTable">
                         <thead>
