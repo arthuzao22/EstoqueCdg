@@ -16,7 +16,7 @@
             {% for categoria in categorias %}
             <a id="btn_color{{ categoria.id }}" class="btn btn-outline-secondary mx-1 flex-shrink-0" 
                href="?categorias_filter={{ categoria.id }}">{{ categoria.categoria }}</a>
-                           {% endfor %}
+            {% endfor %}
           </form>
         </div>
       </div>
@@ -28,8 +28,8 @@
       </div>
 
       <!-- Lista de Produtos -->
-    <div class="row">
-      {% for produto in produtos %}
+      <div class="row">
+        {% for produto in produtos %}
         <div class="col-12 col-md-6 col-lg-4 mb-4">
           <div class="card h-100 shadow position-relative">
             <div class="card-body">
@@ -37,7 +37,9 @@
                 {{ produto.nome }}
                 {{ produto.formato|default:'' }}
                 {% if produto.id_categoria.img %}
-                  <img src="{{ produto.id_categoria.img.url }}" alt="{{ categoria.categoria }}" class="img-fluid" style="width: 70px;" />
+                  <!-- Ajustando a imagem para um tamanho fixo -->
+                  <img src="{{ produto.id_categoria.img.url }}" alt="{{ categoria.categoria }}" class="img-fluid" 
+                       style="width: 70px; height: 70px; object-fit: cover;" />
                 {% endif %}
               </h5>
 
@@ -53,11 +55,12 @@
             </div>
           </div>
         </div>
-      {% empty %}
+        {% empty %}
         <div class="col-12 text-center">
           <p>Nenhum produto registrado.</p>
         </div>
-      {% endfor %}
+        {% endfor %}
+      </div>
     </div>
 
     {% include 'components/footer/footer.html' %}
