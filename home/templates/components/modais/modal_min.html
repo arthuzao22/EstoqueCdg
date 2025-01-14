@@ -32,7 +32,7 @@
                             {% for produtos_estoque_min in produtos_estoque_min %}
                                 <tr>
                                     <td>{{ produtos_estoque_min.id_produto.nome }}</td>
-                                    <td>{{ produtos_estoque_min.qtde }}</td>
+                                    <td>{{ produtos_estoque_min.qtde }} {{ produtos_estoque_min.id_produto.id_formato.formato }}</td>
                                 </tr>
                             {% empty %}
                                 <tr>

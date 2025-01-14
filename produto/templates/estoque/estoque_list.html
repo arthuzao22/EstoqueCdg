@@ -4,11 +4,6 @@
   {% include 'components/header/header.html' %}
 
   <body>
-    <div>
-      <h1 class="d-none d-md-block text-center">Lista de Estoque</h1> <!-- Mostrado em telas médias ou maiores -->
-      <h4 class="d-block d-md-none text-center">Lista de Estoque</h4> <!-- Mostrado em telas menores -->
-    </div>
-
     <!-- Botões de Filtro -->
     <div class="mb-3 d-flex justify-content-center">
       <div class="overflow-auto d-flex justify-content-center flex-nowrap">
@@ -22,12 +17,6 @@
               {{ categoria.categoria }}
             </button>
           {% endfor %}
-          <button type="submit" 
-                  name="categorias_filter" 
-                  value="" 
-                  class="btn btn-outline-primary mx-1 flex-shrink-0">
-            Todos
-          </button>
         </form>
       </div>
     </div>
@@ -37,9 +26,9 @@
       <table class="table table-striped">
         <thead>
           <tr>
-            <th scope="col">Produto</th>
+            <th scope="d d-md-block">Produto</th>
             <th class="d d-md-block">Quantidade</th>
-            <th scope="col">Uni.</th>
+            <th scope="d d-md-block">Uni.</th>
           </tr>
         </thead>
         <tbody>

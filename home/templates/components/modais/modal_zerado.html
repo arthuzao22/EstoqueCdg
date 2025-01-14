@@ -23,12 +23,14 @@
                         <thead>
                             <tr>
                                 <th scope="col">Produto</th>
+                                <th scope="col">Categoria</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for produto in produtos_estoque_zerado %}
                                 <tr>
                                     <td>{{ produto.id_produto.nome }}</td>
+                                    <td>{{ produto.id_produto.id_categoria.categoria }}</td>
                                 </tr>
                             {% empty %}
                                 <tr>
