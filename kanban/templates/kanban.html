@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  {% include 'components/header/header.html' %}
+    <style>
+        .kanban-board {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px;
+        }
+        .kanban-column {
+            width: 30%;
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .kanban-column h2 {
+            text-align: center;
+        }
+        .kanban-item {
+            background-color: #fff;
+            margin: 10px 0;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            cursor: grab;
+        }
+    </style>
+</head>
+<body>
+    <div class="kanban-board">
+        <div class="kanban-column" id="todo">
+            <h2>pedidos</h2>
+            {% comment %} {% for item in kanban_list %}
+                <div class="kanban-item" id="item-{{ item.id }}" draggable="true">{{ item.nome }}</div>
+            {% endfor %} {% endcomment %}
+            <!-- Test items -->
+            <div class="kanban-item" id="item-1" draggable="true">Item 1</div>
+            <div class="kanban-item" id="item-2" draggable="true">Item 2</div>
+            <div class="kanban-item" id="item-3" draggable="true">Item 3</div>
+        </div>
+        <div class="kanban-column" id="in-progress">
+            <h2>In Progress</h2>
+        </div>
+        <div class="kanban-column" id="done">
+            <h2>Feito</h2>
+        </div>
+    </div>
+
+    <script>
+        const items = document.querySelectorAll('.kanban-item');
+        const columns = document.querySelectorAll('.kanban-column');
+
+        items.forEach(item => {
+            item.addEventListener('dragstart', dragStart);
+        });
+
+        columns.forEach(column => {
+            column.addEventListener('dragover', dragOver);
+            column.addEventListener('drop', drop);
+        });
+
+        function dragStart(e) {
+            e.dataTransfer.setData('text/plain', e.target.id);
+            setTimeout(() => {
+                e.target.classList.add('hide');
+            }, 0);
+        }
+
+        function dragOver(e) {
+            e.preventDefault();
+        }
+
+        function drop(e) {
+            e.preventDefault();
+            const id = e.dataTransfer.getData('text/plain');
+            const draggable = document.getElementById(id);
+            draggable.classList.remove('hide');
+            e.target.appendChild(draggable);
+        }
+    </script>
+    {% include 'components/footer/footer.html' %}
+  </body>
+</html>
