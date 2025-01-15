@@ -8,10 +8,10 @@ from movimentacoes.models import Movimentacoes
 class HomeView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         # Filtra os produtos
-        produtos_estoque_zerado = Estoque.objects.filter(qtde=0)
+        produtos_estoque_zerado = Estoque.objects.filter(qtde=0, id_produto__status=1)
         produtos_estoque = Estoque.objects.all()
         movimentacoes = Movimentacoes.objects.all()
-        produtos_estoque_min = Estoque.objects.filter(qtde__lte=F('id_produto__estoquemin'))
+        produtos_estoque_min = Estoque.objects.filter(id_produto__status=1, qtde__lte=F('id_produto__estoquemin'))
         
         # Conta o número de produtos 
         cont_estoque_zerado = len(produtos_estoque_zerado)

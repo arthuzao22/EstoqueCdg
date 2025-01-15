@@ -22,7 +22,7 @@ def filtrar_produtos_por_formato(request):
     try:
         id_categoria = request.GET.get('id_categoria')
         if id_categoria:
-            produtos = Produto.objects.filter(id_categoria=id_categoria)
+            produtos = Produto.objects.filter(id_categoria=id_categoria, status=1)
             produtos_data = [
                 {
                     'id': produto.id,

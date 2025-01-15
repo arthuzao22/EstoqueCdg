@@ -23,7 +23,8 @@
 
       <div class="btns d-flex">
         <div class="btnnew">
-          <a href="{% url 'produto-create' %}" class="btn btn-primary mb-3">Novo Produto</a>
+          <button data-no-loading type="button" class="btn btn-warning mb-3" data-bs-toggle="modal" data-bs-target="#estoquemin">
+            Produtos Inativos</button>
         </div>
       </div>
 
@@ -49,7 +50,11 @@
                 <strong>Quantidade:</strong> {{ produto.unidades }} unidades em cada {{ produto.id_formato }}
               </p>
               <div class="d-flex justify-content-between">
-                {% comment %} <a href="{% url 'produto-delete' produto.pk %}" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Deletar</a> {% endcomment %}
+                <form method="post" action="{% url 'produto-desative' produto.pk %}">
+                  {% csrf_token %}
+                  <input type="hidden" name="acao" value="desativar" />
+                  <button type="submit" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Desativar</button>
+                </form>                
                 <a href="{% url 'produto-update' produto.pk %}" class="btn btn-info btn-sm"><i class="bi bi-pencil-square"></i> Editar</a>
               </div>
             </div>
@@ -62,7 +67,7 @@
         {% endfor %}
       </div>
     </div>
-
+    {% include 'components/modal_produtos.html' %}
     {% include 'components/footer/footer.html' %}
   </body>
 </html>

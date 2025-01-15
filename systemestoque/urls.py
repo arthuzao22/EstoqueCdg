@@ -3,7 +3,7 @@ from django.urls import path
 from empresa.views import EmpresaListView, EmpresaCreateView
 from categoria.views import CategoriaListView, CategoriaCreateView, CategoriaDeleteView
 from formato.views import FormatoListView, FormatoCreateView, FormatoDeleteView
-from produto.views import ProdutoListView, ProdutoCreateView, ProdutoUpdateView, ProdutoDeleteView, EstoqueListView
+from produto.views import ProdutoListView, ProdutoCreateView, ProdutoUpdateView, ProdutoStatusView, EstoqueListView
 from movimentacoes.views import MovimentacoesListView, MovimentacoesCreateView, MovimentacoesDeleteView, filtrar_produtos_por_formato
 from usuarios.views import login_view
 from home.views import HomeView
@@ -36,7 +36,7 @@ urlpatterns = [
     path('produto/', ProdutoListView.as_view(), name='produto-list'),
     path('produto/novo/', ProdutoCreateView.as_view(), name='produto-create'),
     path('produto/<int:pk>/editar/', ProdutoUpdateView.as_view(), name='produto-update'),
-    path('produto/<int:pk>/deletar/', ProdutoDeleteView.as_view(), name='produto-delete'),
+    path('produto/<int:pk>/status/', ProdutoStatusView.as_view(), name='produto-desative'),
     
     # Rotas para movimentações
     path('movimentacoes/', MovimentacoesListView.as_view(), name='movimentacoes-list'),

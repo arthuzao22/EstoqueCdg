@@ -3,27 +3,29 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, D
 from django.contrib import messages  # Para mensagens do front-end
 from .models import Produto
 from .models import Estoque
-
+from rest_framework.response import Response
+from django.views.generic import View
+from django.shortcuts import get_object_or_404
+from django.shortcuts import redirect
 from categoria.models import Categoria
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db import transaction
 from django.http import HttpResponseRedirect
 
 # PRODUTOS
-
-# Listar produtos
 class ProdutoListView(LoginRequiredMixin, ListView):
     model = Produto
     template_name = 'produto_list.html'
     context_object_name = 'produtos'
-    
+         
     def get_context_data(self, **kwargs):
         try:
             context = super().get_context_data(**kwargs)
-            context['categorias'] = Categoria.objects.all()  # Obtém todas as categorias para exibição no template
+            context['categorias'] = Categoria.objects.all()
+            context['produtos_estoque_min'] = self.get_desativados()  # Produtos desativados
             return context
         except Exception as e:
-            messages.error(self.request, f"Ocorreu um erro ao carregar as categorias: {str(e)}")
+            messages.error(self.request, f"Ocorreu um erro ao carregar os dados: {str(e)}")
             return {}
 
     def get_queryset(self):
@@ -33,12 +35,14 @@ class ProdutoListView(LoginRequiredMixin, ListView):
             if categorias_filter:
                 queryset = queryset.filter(id_categoria=categorias_filter, status=1)
             else:
-                queryset = queryset.filter(id_categoria=1, status=1)
+                queryset = queryset.filter(id_categoria=1)
             return queryset
         except Exception as e:
             messages.error(self.request, f"Ocorreu um erro ao filtrar os produtos: {str(e)}")
             return Produto.objects.none()
 
+    def get_desativados(self):
+        return Produto.objects.filter(status=0)
 
 
 # Criar produto
@@ -81,26 +85,29 @@ class ProdutoUpdateView(LoginRequiredMixin, UpdateView):
             return self.form_invalid(form)
 
 
-# Deletar produto
-class ProdutoDeleteView(LoginRequiredMixin, DeleteView):
-    model = Produto
-    template_name = 'produto_confirm_delete.html'
+class ProdutoStatusView(LoginRequiredMixin, View):
     success_url = reverse_lazy('produto-list')
 
-    def delete(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
+        produto = get_object_or_404(Produto, pk=kwargs['pk'])
+        acao = request.POST.get('acao')  # Recebe a ação do formulário (ativar/desativar)
+
         try:
-            if request.user.is_authenticated and request.user.is_superuser:
-                response = super().delete(request, *args, **kwargs)
-                messages.success(request, "Produto deletado com sucesso!")
-                return response
+            if acao == 'desativar':
+                produto.status = 0
+                messages.success(request, f"Produto {produto.nome} desativado com sucesso!")
+            elif acao == 'ativar':
+                produto.status = 1
+                messages.success(request, f"Produto {produto.nome} ativado com sucesso!")
             else:
-                messages.error(request, "Você não tem permissão para excluir este produto.")
-                return HttpResponseRedirect(self.success_url)
+                messages.error(request, "Ação inválida.")
+                return redirect(self.success_url)
 
+            produto.save()
         except Exception as e:
-            messages.error(request, f"Ocorreu um erro ao deletar o produto: {str(e)}")
-            return HttpResponseRedirect(self.success_url)
+            messages.error(request, f"Ocorreu um erro: {str(e)}")
 
+        return redirect(self.success_url)
 
 # ESTOQUE
 
@@ -139,3 +146,4 @@ class EstoqueListView(LoginRequiredMixin, ListView):
         except Exception as e:
             messages.error(self.request, f"Ocorreu um erro ao filtrar os estoques: {str(e)}")
             return Estoque.objects.none()
+ 
