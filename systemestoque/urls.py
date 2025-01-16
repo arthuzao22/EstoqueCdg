@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.urls import path
-from kanban.views import KanBanListView, KanbanUpdateView, KanbanDeleteView
+from kanban.views import KanBanListView
 from empresa.views import EmpresaListView, EmpresaCreateView
 from categoria.views import CategoriaListView, CategoriaCreateView, CategoriaDeleteView
 from formato.views import FormatoListView, FormatoCreateView, FormatoDeleteView
@@ -53,8 +53,6 @@ urlpatterns = [
     
     # Rotas para Kanban
     path('kanban/', KanBanListView.as_view(), name='kanban-list'),
-    path('kanban/<int:pk>/editar/', KanbanUpdateView.as_view(), name='kanban-update'),
-    path('kanban/<int:pk>/deletar/', KanbanDeleteView.as_view(), name='kanban-delete'),
 ]
 
 if settings.DEBUG:

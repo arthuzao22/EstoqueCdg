@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'movimentacoes',
     'usuarios',
     'home',
+    'kanban',
 ]
 
 LOGIN_URL = '/usuarios/login/'

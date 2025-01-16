@@ -35,12 +35,56 @@
                 <div class="kanban-item" id="item-{{ item.id }}" draggable="true">{{ item.nome }}</div>
             {% endfor %} {% endcomment %}
             <!-- Test items -->
-            <div class="kanban-item" id="item-1" draggable="true">Item 1</div>
-            <div class="kanban-item" id="item-2" draggable="true">Item 2</div>
-            <div class="kanban-item" id="item-3" draggable="true">Item 3</div>
+            <div class="kanban-item" id="item-1" draggable="true">
+                <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Item 1</div>
+                    <div class="card-body">
+                      <h5 class="card-title">Light card title</h5>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="kanban-item" id="item-2" draggable="true">
+                <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Item 2</div>
+                    <div class="card-body">
+                      <h5 class="card-title">Light card title</h5>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="kanban-item" id="item-3" draggable="true">
+                <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Item 3</div>
+                    <div class="card-body">
+                      <h5 class="card-title">Light card title</h5>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                  </div>
+            </div>
+            <div class="kanban-item" id="item-4" draggable="true">
+                <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Item 4</div>
+                    <div class="card-body">
+                      <h5 class="card-title">Light card title</h5>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                  </div>
+            </div>
+
+
         </div>
         <div class="kanban-column" id="in-progress">
             <h2>In Progress</h2>
+            <div class="kanban-item" id="item-5" draggable="true">
+                <div class="card text-dark bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Item 5</div>
+                    <div class="card-body">
+                      <h5 class="card-title">Light card title</h5>
+                      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                  </div>
+            </div>
         </div>
         <div class="kanban-column" id="done">
             <h2>Feito</h2>
