@@ -3,34 +3,65 @@
 <html lang="pt-br">
   {% include 'components/header/header.html' %}
     <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 0;
+        }
         .kanban-board {
             display: flex;
             justify-content: space-around;
-            margin: 20px;
+            margin: 7px;
+            padding: 10px;
+            background-color: #fff;
+            border-radius: 3px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
         .kanban-column {
             width: 30%;
-            background-color: #f4f4f4;
+            background-color: #e3e4e6;
             padding: 10px;
-            border-radius: 5px;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
         .kanban-column h2 {
             text-align: center;
+            color: #333;
+            margin-bottom: 20px;
         }
         .kanban-item {
             background-color: #fff;
             margin: 10px 0;
-            padding: 10px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 15px;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             cursor: grab;
+            transition: transform 0.2s;
+        }
+        .kanban-item:hover {
+            transform: scale(1.05);
+        }
+        .kanban-item .card {
+            border: none;
+        }
+        .kanban-item .card-header {
+            background-color: #24969d;
+            color: #fff;
+            border-radius: 4px 4px 0 0;
+        }
+        .kanban-item .card-body {
+            padding: 10px;
+        }
+        .hide {
+            display: none;
         }
     </style>
 </head>
 <body>
     <div class="kanban-board">
         <div class="kanban-column" id="todo">
-            <h2>pedidos</h2>
+            <h2>Pedidos</h2>
             {% comment %} {% for item in kanban_list %}
                 <div class="kanban-item" id="item-{{ item.id }}" draggable="true">{{ item.nome }}</div>
             {% endfor %} {% endcomment %}
@@ -71,8 +102,6 @@
                     </div>
                   </div>
             </div>
-
-
         </div>
         <div class="kanban-column" id="in-progress">
             <h2>In Progress</h2>

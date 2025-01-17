@@ -47,7 +47,7 @@ class MovimentacoesListView(LoginRequiredMixin, ListView):
     
     def get(self, request, *args, **kwargs):
         queryset = Movimentacoes.objects.order_by("-id")
-        paginator = Paginator(queryset, 10)  # Definindo paginação com 10 itens por página
+        paginator = Paginator(queryset, 20)  # Definindo paginação com 10 itens por página
         
         page = request.GET.get('page')
         try:
