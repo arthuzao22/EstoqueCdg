@@ -75,18 +75,20 @@ WSGI_APPLICATION = 'systemestoque.wsgi.application'
 #    }
 #}
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'estoque_cdg',  # Nome do banco de dados
-        'USER': 'estoque_cdg_user',  # Nome de usuário
-        'PASSWORD': 'nN3P1S5jCi6DeRIocPRRdGCUMSbwy1Mn',  # Senha
-        'HOST': 'dpg-ctttq1bqf0us73eut2cg-a.oregon-postgres.render.com',  # Host externo
-        'PORT': '5432',  # Porta
+        'NAME': 'estoqueCdg',
+        'USER': '3tmkk7',
+        'PASSWORD': 'xau_6HBaJHK1YIIHXNseXdYoon1COlk8GGqv1',  # Pegando do .env
+        'HOST': 'us-east-1.sql.xata.sh',
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
     }
 }
-
-
 
 #DATABASES = {
 #    'default': {
