@@ -76,19 +76,16 @@ WSGI_APPLICATION = 'systemestoque.wsgi.application'
 #}
 
 
+}
+
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        # Prefer environment variables for credentials in production. Fallback to the provided Supabase values.
-        'NAME': os.environ.get('DB_NAME', 'postgres'),
-        'USER': os.environ.get('DB_USER', 'postgres'),
-        'PASSWORD': os.environ.get('DB_PASSWORD', 'nh3sw7AYvuZfXqdk'),
-        'HOST': os.environ.get('DB_HOST', 'db.skmaztzzdwjbfbbmqynn.supabase.co'),
-        'PORT': os.environ.get('DB_PORT', '5432'),
-        'CONN_MAX_AGE': int(os.environ.get('DB_CONN_MAX_AGE', 600)),
-        'OPTIONS': {
-            'sslmode': os.environ.get('DB_SSLMODE', 'require'),
-        },
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'pageflow$estoque',
+        'USER': 'pageflow',
+        'PASSWORD': 'imH7Xu4WMH4$9s3',
+        'HOST': 'pageflow.mysql.pythonanywhere-services.com',
+        'PORT': '',
     }
 }
 
