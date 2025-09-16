@@ -79,13 +79,15 @@ WSGI_APPLICATION = 'systemestoque.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'estoqueCdg',
-        'USER': '3tmkk7',
-        'PASSWORD': 'xau_6HBaJHK1YIIHXNseXdYoon1COlk8GGqv1',  # Pegando do .env
-        'HOST': 'us-east-1.sql.xata.sh',
-        'PORT': '5432',
+        # Prefer environment variables for credentials in production. Fallback to the provided Supabase values.
+        'NAME': os.environ.get('DB_NAME', 'postgres'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', 'nh3sw7AYvuZfXqdk'),
+        'HOST': os.environ.get('DB_HOST', 'db.skmaztzzdwjbfbbmqynn.supabase.co'),
+        'PORT': os.environ.get('DB_PORT', '5432'),
+        'CONN_MAX_AGE': int(os.environ.get('DB_CONN_MAX_AGE', 600)),
         'OPTIONS': {
-            'sslmode': 'require',
+            'sslmode': os.environ.get('DB_SSLMODE', 'require'),
         },
     }
 }
