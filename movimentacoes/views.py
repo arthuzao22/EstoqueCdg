@@ -80,6 +80,28 @@ class MovimentacoesCreateView(LoginRequiredMixin, CreateView):
     form_class = MovimentacoesForm
     template_name = 'movimentacoes_form.html'
     success_url = reverse_lazy('movimentacoes-create')
+    
+    def post(self, request, *args, **kwargs):
+        """Debug: Log de todos os dados POST recebidos"""
+        print("🔄 POST REQUEST RECEBIDO:")
+        print("📦 Dados POST:", dict(request.POST))
+        print("👤 Usuário:", request.user)
+        return super().post(request, *args, **kwargs)
+    
+    def form_invalid(self, form):
+        """Debug: Log dos erros quando o formulário é inválido"""
+        print("🚨 FORMULÁRIO INVÁLIDO!")
+        print("📋 Dados recebidos:", self.request.POST.dict())
+        print("❌ Erros do formulário:")
+        print(form.errors.as_json())
+        
+        # Log detalhado para cada campo com erro
+        for field, errors in form.errors.items():
+            print(f"   Campo '{field}': {errors}")
+        
+        logger.error(f"Erro de validação no formulário: {form.errors.as_json()}")
+        messages.error(self.request, "Há erros no formulário. Verifique os campos destacados.")
+        return super().form_invalid(form)
 
     def form_valid(self, form):
         try:
