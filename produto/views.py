@@ -146,4 +146,34 @@ class EstoqueListView(LoginRequiredMixin, ListView):
         except Exception as e:
             messages.error(self.request, f"Ocorreu um erro ao filtrar os estoques: {str(e)}")
             return Estoque.objects.none()
+
+
+class PublicEstoqueListView(ListView):
+    """Página pública do estoque (sem necessidade de login).
+
+    Exibe itens em estoque (qtde != 0) e permite filtro por categoria via
+    parâmetro GET `categorias_filter`.
+    """
+    model = Estoque
+    template_name = 'estoque/estoque_public.html'
+    context_object_name = 'estoques'
+    paginate_by = 24
+
+    def get_queryset(self):
+        try:
+            queryset = Estoque.objects.exclude(qtde=0)
+            categorias_filter = self.request.GET.get('categorias_filter')
+            if categorias_filter:
+                queryset = queryset.filter(id_produto__id_categoria=categorias_filter).exclude(qtde=0)
+            return queryset
+        except Exception:
+            return Estoque.objects.none()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['categorias'] = Categoria.objects.all()
+        # Adiciona o cálculo para exibição (unidades * qtde)
+        for estoque in context.get('estoques', []):
+            estoque.calculo = estoque.qtde * estoque.id_produto.unidades
+        return context
  

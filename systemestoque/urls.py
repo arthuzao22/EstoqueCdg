@@ -4,7 +4,7 @@ from kanban.views import KanBanListView
 from empresa.views import EmpresaListView, EmpresaCreateView
 from categoria.views import CategoriaListView, CategoriaCreateView, CategoriaDeleteView
 from formato.views import FormatoListView, FormatoCreateView, FormatoDeleteView
-from produto.views import ProdutoListView, ProdutoCreateView, ProdutoUpdateView, ProdutoStatusView, EstoqueListView
+from produto.views import ProdutoListView, ProdutoCreateView, ProdutoUpdateView, ProdutoStatusView, EstoqueListView, PublicEstoqueListView
 from movimentacoes.views import MovimentacoesListView, MovimentacoesCreateView, MovimentacoesDeleteView, filtrar_produtos_por_formato
 from usuarios.views import login_view
 from home.views import HomeView
@@ -47,6 +47,8 @@ urlpatterns = [
 
     # Rotas para Estoque
     path('estoque/', EstoqueListView.as_view(), name='estoque-list'),
+    # Versão pública do estoque
+    path('estoque/publico/', PublicEstoqueListView.as_view(), name='estoque-public'),
     
     # Rotas para Usuarios
     path('usuarios/login/', login_view, name='usuarios-login'),

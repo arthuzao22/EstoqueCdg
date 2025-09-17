@@ -1,0 +1,74 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+  {% include 'components/header/header.html' %}
+
+  <body>
+    <style>
+      body { background: #f5f7fb; }
+      .container-public { max-width:1100px; margin:32px auto; }
+      .topbar { display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:12px; }
+      .filtro-categorias { display:flex; gap:8px; overflow:auto; }
+      .grid-estoque { display:grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap:16px; }
+      .card-estoque { background:#fff; border-radius:10px; padding:14px; box-shadow:0 8px 20px rgba(0,0,0,0.06); }
+      .card-estoque h4 { margin:0 0 8px 0; font-size:16px; }
+      .badge-qtde { background:#28a745; color:#fff; padding:6px 10px; border-radius:999px; font-weight:600; }
+      .meta { color:#666; font-size:13px }
+      .share-actions { display:flex; gap:8px }
+    </style>
+
+    <div class="container-public">
+      <div class="topbar">
+        <div>
+          <h2>Estoque Público</h2>
+          <p class="meta">Itens disponíveis no momento</p>
+        </div>
+        <div class="share-actions">
+          <a class="btn btn-outline-primary" href="/estoque/">Área interna</a>
+          <button class="btn btn-outline-secondary" onclick="window.print()">Imprimir</button>
+        </div>
+      </div>
+
+      <form method="get" action="{% url 'estoque-public' %}" class="filtro-categorias mb-3">
+        <button type="submit" name="categorias_filter" value="" class="btn btn-outline-secondary">Todas</button>
+        {% for categoria in categorias %}
+          <button type="submit" name="categorias_filter" value="{{ categoria.id }}" class="btn btn-outline-secondary">{{ categoria.categoria }}</button>
+        {% endfor %}
+      </form>
+
+      <div class="grid-estoque">
+        {% for estoque in estoques %}
+          <div class="card-estoque">
+            <h4>{{ estoque.id_produto.nome }} {% if estoque.id_produto.formato %}- {{ estoque.id_produto.formato }}{% endif %}</h4>
+            <div class="meta">Categoria: {{ estoque.id_produto.id_categoria.categoria }}</div>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <div>
+                <div class="meta">Unidades por item</div>
+                <div class="fw-bold">{{ estoque.id_produto.unidades|default:1 }}</div>
+              </div>
+              <div class="text-end">
+                <div class="meta">Quantidade</div>
+                <div class="badge-qtde">{{ estoque.qtde }}</div>
+              </div>
+            </div>
+            <hr>
+            <div class="d-flex justify-content-between">
+              <small class="meta">Total unidades</small>
+              <strong class="numero">{{ estoque.calculo }}</strong>
+            </div>
+          </div>
+        {% empty %}
+          <div class="empty-msg">Nenhum item no estoque.</div>
+        {% endfor %}
+      </div>
+
+    </div>
+
+    <script>
+      function formatarNumero(numero) { return numero.toLocaleString('pt-BR'); }
+      document.querySelectorAll('.numero').forEach(function (el) { el.innerText = formatarNumero(parseInt(el.innerText) || 0); });
+    </script>
+
+  </body>
+  {% include 'components/footer/footer.html' %}
+</html>
